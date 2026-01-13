@@ -1,0 +1,29 @@
+{
+  "name": "shanti-silk-house",
+  "version": "1.0.0",
+  "description": "E-commerce website for Shanti Silk House / Label Swathy Reddy",
+  "main": "api/index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "cd client && npm run build",
+    "start": "cd client && npm start",
+    "install-all": "npm install && cd client && npm install",
+    "vercel-build": "cd client && npm install && npm run build"
+  },
+  "keywords": ["e-commerce", "sarees", "silk", "vercel", "serverless"],
+  "author": "Shanti Silk House",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^8.11.3",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "cloudinary": "^1.41.0",
+    "busboy": "^1.6.0"
+  },
+  "devDependencies": {
+    "vercel": "^34.0.0"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}
