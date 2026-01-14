@@ -18,6 +18,12 @@ module.exports = async (req, res) => {
       const match = urlPath.match(/^\/api\/products\/(.+)$/);
       if (match) {
         slug = match[1].split('/');
+      } else {
+        // If no match, try to get from req.path or req.url
+        const pathMatch = (req.path || req.url || '').match(/\/api\/products\/(.+)$/);
+        if (pathMatch) {
+          slug = pathMatch[1].split('/');
+        }
       }
     }
   }
