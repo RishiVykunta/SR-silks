@@ -11,6 +11,9 @@ module.exports = async (req, res) => {
 
   let handler;
   switch (key) {
+    case 'login':
+      handler = require('../../handlers/auth/admin/login');
+      break;
     case 'dashboard':
       handler = require('../../handlers/admin/dashboard');
       break;
