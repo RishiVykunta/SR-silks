@@ -10,6 +10,11 @@ const Footer = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleLinkClick = (e) => {
+    // Scroll to top when any footer link is clicked
+    scrollToTop();
+  };
+
   const handleVideoCall = () => {
     window.open(`https://wa.me/91${BRAND_INFO.contact.whatsapp}?video=true`, '_blank');
   };
@@ -63,25 +68,23 @@ const Footer = () => {
           <div className="footer-section">
             <h4>Quick Links</h4>
             <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/products">Collection</Link></li>
-              <li><Link to="/about">About Us</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
+              <li><Link to="/" onClick={handleLinkClick}>Home</Link></li>
+              <li><Link to="/products" onClick={handleLinkClick}>Collection</Link></li>
+              <li><Link to="/" onClick={(e) => { e.preventDefault(); handleLinkClick(); const aboutSection = document.querySelector('.about-section'); if (aboutSection) { aboutSection.scrollIntoView({ behavior: 'smooth' }); } }}>Our Story</Link></li>
+              <li><Link to="/contact" onClick={handleLinkClick}>Contact</Link></li>
             </ul>
           </div>
 
           {/* Categories */}
           <div className="footer-section">
-            <h4>Categories</h4>
+            <h4>Shop by Category</h4>
             <ul>
-              {CATEGORIES.map(category => (
-                <li key={category}>
-                  <Link to={`/collection/${category}`}>
-                    {category === 'Party' ? 'Party Wear' : `${category} Sarees`}
-                  </Link>
-                </li>
-              ))}
-              <li><Link to="/products">All Products</Link></li>
+              <li><Link to="/collection/Formal" onClick={handleLinkClick}>Formal</Link></li>
+              <li><Link to="/collection/Party" onClick={handleLinkClick}>Party</Link></li>
+              <li><Link to="/collection/Casual" onClick={handleLinkClick}>Casual</Link></li>
+              <li><Link to="/collection/Traditional" onClick={handleLinkClick}>Traditional</Link></li>
+              <li><Link to="/collection/Special-Occasions" onClick={handleLinkClick}>Special Occasions</Link></li>
+              <li><Link to="/products" onClick={handleLinkClick}>All Products</Link></li>
             </ul>
           </div>
 
@@ -132,10 +135,10 @@ const Footer = () => {
           <div className="footer-section">
             <h4>User Policy</h4>
             <ul>
-              <li><Link to="/privacy-policy">Privacy Policy</Link></li>
-              <li><Link to="/terms-of-service">Terms of Service</Link></li>
-              <li><Link to="/refund-policy">Refund & Return Policy</Link></li>
-              <li><Link to="/shipping-policy">Shipping Policy</Link></li>
+              <li><Link to="/privacy-policy" onClick={handleLinkClick}>Privacy Policy</Link></li>
+              <li><Link to="/terms-of-service" onClick={handleLinkClick}>Terms of Service</Link></li>
+              <li><Link to="/refund-policy" onClick={handleLinkClick}>Refund & Return Policy</Link></li>
+              <li><Link to="/shipping-policy" onClick={handleLinkClick}>Shipping Policy</Link></li>
             </ul>
           </div>
         </div>
@@ -145,10 +148,10 @@ const Footer = () => {
             <p>&copy; {new Date().getFullYear()} Label by Swathy Reddy. All rights reserved.</p>
           </div>
           <div className="footer-bottom-right">
-            <Link to="/privacy-policy">Privacy Policy</Link>
-            <Link to="/terms-of-service">Terms of Service</Link>
-            <Link to="/refund-policy">Refund & Return Policy</Link>
-            <Link to="/shipping-policy">Shipping Policy</Link>
+            <Link to="/privacy-policy" onClick={handleLinkClick}>Privacy Policy</Link>
+            <Link to="/terms-of-service" onClick={handleLinkClick}>Terms of Service</Link>
+            <Link to="/refund-policy" onClick={handleLinkClick}>Refund & Return Policy</Link>
+            <Link to="/shipping-policy" onClick={handleLinkClick}>Shipping Policy</Link>
           </div>
         </div>
       </div>
