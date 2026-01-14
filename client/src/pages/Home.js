@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../config/api';
-import { BRAND_INFO, CATEGORIES } from '../config/constants';
+import { BRAND_INFO } from '../config/constants';
 import { useWishlist } from '../contexts/WishlistContext';
 
 const Home = () => {
@@ -14,10 +14,6 @@ const Home = () => {
   const { toggleWishlist, isInWishlist } = useWishlist();
 
   useEffect(() => {
-    loadData();
-  }, []);
-
-  useEffect(() => {
     if (heroSlides.length > 0) {
       const interval = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
@@ -26,7 +22,7 @@ const Home = () => {
     }
   }, [heroSlides.length]);
 
-  const preloadImage = (src) => {
+  const preloadImage = useCallback((src) => {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onload = () => resolve(src);
@@ -36,9 +32,9 @@ const Home = () => {
       };
       img.src = src;
     });
-  };
+  }, []);
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -91,7 +87,11 @@ const Home = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [preloadImage]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const handlePriceFilter = (maxPrice) => {
     setPriceFilter(maxPrice === priceFilter ? null : maxPrice);

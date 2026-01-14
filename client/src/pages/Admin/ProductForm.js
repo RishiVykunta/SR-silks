@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../config/api';
@@ -39,30 +39,7 @@ const ProductForm = () => {
   const [newSize, setNewSize] = useState('');
   const [newColor, setNewColor] = useState('');
 
-  useEffect(() => {
-    if (!isAdmin) {
-      navigate('/login');
-      return;
-    }
-
-    if (isEditMode) {
-      loadProduct();
-    }
-  }, [isAdmin, navigate, id, isEditMode]);
-
-  // Auto-slide images every 0.6 seconds
-  useEffect(() => {
-    if (formData.images && formData.images.length > 1) {
-      const interval = setInterval(() => {
-        setCurrentImageIndex((prev) => (prev + 1) % formData.images.length);
-      }, 600);
-      return () => clearInterval(interval);
-    } else {
-      setCurrentImageIndex(0);
-    }
-  }, [formData.images]);
-
-  const loadProduct = async () => {
+  const loadProduct = useCallback(async () => {
     try {
       setLoading(true);
       const response = await api.get(`/admin/products`);
@@ -98,7 +75,30 @@ const ProductForm = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (!isAdmin) {
+      navigate('/login');
+      return;
+    }
+
+    if (isEditMode) {
+      loadProduct();
+    }
+  }, [isAdmin, navigate, isEditMode, loadProduct]);
+
+  // Auto-slide images every 0.6 seconds
+  useEffect(() => {
+    if (formData.images && formData.images.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prev) => (prev + 1) % formData.images.length);
+      }, 600);
+      return () => clearInterval(interval);
+    } else {
+      setCurrentImageIndex(0);
+    }
+  }, [formData.images]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
