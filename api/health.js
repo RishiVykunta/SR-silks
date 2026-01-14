@@ -1,11 +1,9 @@
-const { corsHeaders, handleCors } = require('../handlers/_lib/cors');
+const { corsHeaders } = require('../handlers/_lib/cors');
 const { query } = require('../handlers/_lib/db');
+const { runHandler } = require('../handlers/_lib/vercel-adapter');
 
-module.exports = async (req, res) => {
-  // Handle CORS
-  const corsResponse = handleCors(req, res);
-  if (corsResponse) return corsResponse;
-
+// Handler function that returns Netlify-style response
+async function healthHandler(req, res) {
   try {
     // Test database connection
     await query('SELECT NOW()');
@@ -64,4 +62,14 @@ module.exports = async (req, res) => {
       })
     };
   }
+}
+
+// Vercel handler
+module.exports = async (req, res) => {
+  // Handle CORS preflight
+  if (req.method === 'OPTIONS') {
+    return res.status(200).set(corsHeaders()).json({ message: 'OK' });
+  }
+  
+  return runHandler(healthHandler, req, res);
 };
