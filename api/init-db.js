@@ -3,15 +3,27 @@ const { query, getPool } = require('./_lib/db');
 const { corsHeaders, handleCors } = require('./_lib/cors');
 
 module.exports = async (req, res) => {
+  // Log request for debugging
+  console.log('Init DB request:', {
+    method: req.method,
+    url: req.url,
+    path: req.path
+  });
+
   // Handle CORS
   const corsResponse = handleCors(req, res);
   if (corsResponse) return corsResponse;
 
-  if (req.method !== 'POST') {
+  // Allow both GET and POST for easier testing
+  if (req.method !== 'POST' && req.method !== 'GET') {
     return {
       statusCode: 405,
       headers: corsHeaders(),
-      body: JSON.stringify({ error: 'Method not allowed' })
+      body: JSON.stringify({ 
+        error: 'Method not allowed',
+        received: req.method,
+        allowed: ['GET', 'POST']
+      })
     };
   }
 
