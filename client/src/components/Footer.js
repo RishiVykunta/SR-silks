@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BRAND_INFO, CATEGORIES } from '../config/constants';
+import { BRAND_INFO } from '../config/constants';
 import './Footer.css';
 
 const Footer = () => {
