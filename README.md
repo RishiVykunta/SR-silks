@@ -1,6 +1,6 @@
-# Shanti Silk House /  E-commerce Website
+# SR Silks / Label by Swathy Reddy - E-commerce Website
 
-A complete full-stack e-commerce website for designer sarees built with React frontend and Express.js backend, using Neon PostgreSQL database.
+A complete full-stack e-commerce website for designer sarees built with React frontend and Vercel serverless functions, using Neon PostgreSQL database.
 
 ## Features
 
@@ -33,18 +33,16 @@ A complete full-stack e-commerce website for designer sarees built with React fr
 - CSS with CSS Variables
 
 ### Backend
-- Node.js
-- Express.js
+- Node.js (Vercel Serverless Functions)
 - PostgreSQL (Neon)
 - JWT for authentication
 - Bcrypt for password hashing
 - Cloudinary for image storage
-- Multer for file uploads
 
-## Setup Instructions
+## Quick Start (Local Development)
 
 ### Prerequisites
-- Node.js (v14 or higher)
+- Node.js (v18 or higher)
 - npm or yarn
 - Neon PostgreSQL database account
 - Cloudinary account
@@ -53,114 +51,189 @@ A complete full-stack e-commerce website for designer sarees built with React fr
 
 1. **Clone the repository**
    ```bash
-   cd "shanthi silk house"
+   cd "SR Silks"
+   cd SR-silks
    ```
 
-2. **Install root dependencies**
+2. **Install dependencies**
    ```bash
-   npm install
+   npm run install-all
    ```
 
-3. **Install server dependencies**
-   ```bash
-   cd server
-   npm install
-   ```
+3. **Configure environment variables**
 
-4. **Install client dependencies**
-   ```bash
-   cd ../client
-   npm install
-   ```
-
-5. **Configure environment variables**
-
-   Create a `.env` file in the `server` directory:
+   Create a `.env` file in the root directory (copy from `.env.example`):
    ```env
-   PORT=5000
-   NODE_ENV=development
    DATABASE_URL=your_neon_postgresql_connection_string
    JWT_SECRET=your_jwt_secret_key_here
    JWT_EXPIRES_IN=7d
-
    CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
    CLOUDINARY_API_KEY=your_cloudinary_api_key
    CLOUDINARY_API_SECRET=your_cloudinary_api_secret
    ```
 
-   Create a `.env` file in the `client` directory (optional):
-   ```env
-   REACT_APP_API_URL=http://localhost:5000/api
-   ```
-
-6. **Initialize the database**
-   The database tables will be automatically created when you start the server for the first time.
-
-   Default admin credentials:
-   - Email: `srsilks@gmail.com`
-   - Password: `admin123`
-
-7. **Start the development servers**
-
-   From the root directory:
+4. **Start development server**
    ```bash
    npm run dev
    ```
 
-   Or start them separately:
-   ```bash
-   # Terminal 1 - Backend
-   cd server
-   npm run dev
-
-   # Terminal 2 - Frontend
-   cd client
-   npm start
-   ```
-
-8. **Access the application**
+5. **Access the application**
    - Frontend: http://localhost:3000
-   - Backend API: http://localhost:5000
+   - Backend API: http://localhost:3000/api
    - Admin Panel: http://localhost:3000/admin
 
-## Brand Information
+## Deployment Guide
 
-- **Business Name:** Label by Swathy Reddy / Samala Swathy
-- **Founder:** Swathy Reddy
-- **Address:** Flats no 301&302, Sri Sai eDurga castle, Naveen nagar colony, Road no 1 Banjarahills, Hyderabad, PIN code 500034, Telangana, India
-- **Phone:** 7569060926
-- **WhatsApp:** 9000360756
-- **Email:** Swathyreddy169@icloud.com
-- **Instagram:** [@label_swathyreddy](https://www.instagram.com/label_swathyreddy?igsh=Z2tkYXVrYmpjNDRy&utm_source=qr)
-- **Domain:** labelbyswathyreddy.com
+### Step 1: Create Neon PostgreSQL Database
+
+1. **Sign up for Neon**
+   - Go to [https://neon.tech](https://neon.tech)
+   - Click "Sign Up" and create a free account
+   - You can sign up with GitHub, Google, or email
+
+2. **Create a New Project**
+   - After logging in, click "Create Project"
+   - Choose a project name (e.g., "sr-silks")
+   - Select a region closest to your users
+   - Choose PostgreSQL version (latest recommended)
+   - Click "Create Project"
+
+3. **Get Connection String**
+   - Once the project is created, you'll see a connection string
+   - It looks like: `postgresql://username:password@ep-xxx-xxx.region.aws.neon.tech/dbname?sslmode=require`
+   - **Important**: Copy this connection string - you'll need it for Vercel
+
+4. **Initialize Database**
+   - Click on "SQL Editor" in the Neon dashboard
+   - Copy the contents of `database-init.sql` from this project
+   - Paste and run it in the SQL Editor
+   - Alternatively, after deploying to Vercel, call `/api/init-db` endpoint to auto-initialize
+
+### Step 2: Deploy to Vercel
+
+1. **Install Vercel CLI** (if not already installed)
+   ```bash
+   npm install -g vercel
+   ```
+
+2. **Login to Vercel**
+   ```bash
+   vercel login
+   ```
+
+3. **Deploy the Project**
+   ```bash
+   cd "SR Silks/SR-silks"
+   vercel
+   ```
+   - Follow the prompts
+   - When asked "Set up and deploy?", choose **Yes**
+   - When asked "Which scope?", select your account
+   - When asked "Link to existing project?", choose **No** (for first deployment)
+   - When asked "What's your project's name?", enter a name (e.g., "sr-silks")
+   - When asked "In which directory is your code located?", press Enter (current directory)
+
+4. **Set Environment Variables in Vercel**
+   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Select your project
+   - Go to **Settings** → **Environment Variables**
+   - Add the following variables:
+
+   ```
+   DATABASE_URL = (your Neon connection string)
+   JWT_SECRET = (generate a strong random string, minimum 32 characters)
+   JWT_EXPIRES_IN = 7d
+   CLOUDINARY_CLOUD_NAME = (your Cloudinary cloud name)
+   CLOUDINARY_API_KEY = (your Cloudinary API key)
+   CLOUDINARY_API_SECRET = (your Cloudinary API secret)
+   ```
+
+   **Important**: 
+   - Make sure to add these for **Production**, **Preview**, and **Development** environments
+   - After adding variables, you need to **redeploy** for them to take effect
+
+5. **Redeploy with Environment Variables**
+   ```bash
+   vercel --prod
+   ```
+   Or trigger a redeploy from the Vercel dashboard:
+   - Go to **Deployments** tab
+   - Click the three dots (⋯) on the latest deployment
+   - Click **Redeploy**
+
+6. **Initialize Database After Deployment**
+   - Once deployed, visit: `https://your-app.vercel.app/api/init-db`
+   - This will create all tables and set up the default admin account
+   - Default admin credentials:
+     - Email: `srsilks@gmail.com`
+     - Password: `admin123`
+   - **Important**: Change the admin password after first login!
+
+### Step 3: Verify Deployment
+
+1. **Check Health Endpoint**
+   - Visit: `https://your-app.vercel.app/api/health`
+   - Should show database connection status
+
+2. **Test Admin Login**
+   - Visit: `https://your-app.vercel.app/admin`
+   - Login with default credentials
+   - Change password immediately
+
+3. **Test Frontend**
+   - Visit: `https://your-app.vercel.app`
+   - Browse products, test registration, etc.
+
+## Environment Variables Reference
+
+| Variable | Description | Required | Example |
+|----------|-------------|----------|---------|
+| `DATABASE_URL` | Neon PostgreSQL connection string | Yes | `postgresql://user:pass@host/db?sslmode=require` |
+| `JWT_SECRET` | Secret key for JWT token signing | Yes | Random 32+ character string |
+| `JWT_EXPIRES_IN` | JWT token expiration time | No | `7d` (default) |
+| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name | Yes | Your Cloudinary cloud name |
+| `CLOUDINARY_API_KEY` | Cloudinary API key | Yes | Your Cloudinary API key |
+| `CLOUDINARY_API_SECRET` | Cloudinary API secret | Yes | Your Cloudinary API secret |
+| `REACT_APP_API_URL` | API URL for React app (local dev only) | No | `http://localhost:5000/api` |
 
 ## Project Structure
 
 ```
-shanthi-silk-house/
-├── server/                 # Backend Express.js application
-│   ├── config/            # Database configuration
-│   ├── middleware/        # Authentication middleware
-│   ├── routes/            # API routes
-│   │   ├── auth.js       # Authentication routes
-│   │   ├── products.js   # Product routes
-│   │   ├── cart.js       # Cart routes
-│   │   ├── wishlist.js   # Wishlist routes
-│   │   ├── orders.js     # Order routes
-│   │   ├── admin.js      # Admin routes
-│   │   └── upload.js     # Image upload routes
-│   └── index.js          # Server entry point
+SR-silks/
+├── api/                    # Vercel serverless functions
+│   ├── admin/             # Admin API routes
+│   ├── auth/              # Authentication routes
+│   ├── cart/              # Cart routes
+│   ├── orders/            # Order routes
+│   ├── products/          # Product routes
+│   ├── upload/            # Image upload routes
+│   ├── wishlist/          # Wishlist routes
+│   ├── health.js          # Health check endpoint
+│   └── init-db.js         # Database initialization endpoint
 │
-├── client/                # Frontend React application
+├── handlers/              # Handler functions for API routes
+│   ├── _lib/              # Shared utilities (db, auth, cors)
+│   ├── admin/             # Admin handlers
+│   ├── auth/              # Auth handlers
+│   ├── cart/              # Cart handlers
+│   ├── orders/            # Order handlers
+│   ├── products/          # Product handlers
+│   ├── upload/            # Upload handlers
+│   └── wishlist/          # Wishlist handlers
+│
+├── client/                # React frontend application
 │   ├── public/           # Static files
 │   ├── src/
 │   │   ├── components/   # Reusable components
-│   │   ├── contexts/     # React contexts (Auth, Cart, Wishlist)
+│   │   ├── contexts/     # React contexts (Auth, Wishlist)
 │   │   ├── pages/        # Page components
 │   │   ├── config/       # Configuration files
 │   │   └── App.js        # Main app component
 │   └── package.json
 │
+├── database-init.sql      # Database schema (reference)
+├── vercel.json           # Vercel configuration
+├── package.json          # Root dependencies
 └── README.md
 ```
 
@@ -189,9 +262,7 @@ shanthi-silk-house/
 
 ### Wishlist
 - `GET /api/wishlist` - Get user wishlist
-- `POST /api/wishlist/add` - Add to wishlist
 - `POST /api/wishlist/toggle` - Toggle wishlist item
-- `DELETE /api/wishlist/remove/:id` - Remove from wishlist
 - `GET /api/wishlist/count` - Get wishlist count
 
 ### Orders
@@ -215,6 +286,10 @@ shanthi-silk-house/
 - `POST /api/upload/image` - Upload single image
 - `POST /api/upload/images` - Upload multiple images
 - `DELETE /api/upload/image/:publicId` - Delete image
+
+### Utility
+- `GET /api/health` - Health check and database status
+- `GET /api/init-db` - Initialize database (run once after deployment)
 
 ## Database Schema
 
@@ -250,24 +325,34 @@ shanthi-silk-house/
 - Error handling
 - Form validation
 
-## Deployment
+## Troubleshooting
 
-### Backend Deployment
-1. Set environment variables in your hosting platform
-2. Ensure DATABASE_URL points to your Neon PostgreSQL instance
-3. Deploy to platforms like Heroku, Railway, or Render
+### Database Connection Issues
+- Verify `DATABASE_URL` is correctly set in Vercel
+- Ensure connection string includes `?sslmode=require`
+- Check Neon dashboard for connection limits
+- Verify database is not paused (Neon free tier pauses after inactivity)
 
-### Frontend Deployment
-1. Build the React app: `npm run build`
-2. Deploy the `build` folder to platforms like:
-   - Netlify
-   - Vercel
-   - AWS S3 + CloudFront
+### Build Failures
+- Ensure all dependencies are in `package.json`
+- Check Node.js version (requires >=18.x)
+- Review build logs in Vercel dashboard
 
-### Database
-- The application uses Neon PostgreSQL
-- Tables are automatically created on first run
-- Make sure your DATABASE_URL is correctly configured
+### API Errors
+- Check environment variables are set correctly
+- Verify database tables are initialized (`/api/init-db`)
+- Review function logs in Vercel dashboard
+
+## Brand Information
+
+- **Business Name:** Label by Swathy Reddy / Samala Swathy
+- **Founder:** Swathy Reddy
+- **Address:** Flats no 301&302, Sri Sai eDurga castle, Naveen nagar colony, Road no 1 Banjarahills, Hyderabad, PIN code 500034, Telangana, India
+- **Phone:** 7569060926
+- **WhatsApp:** 9000360756
+- **Email:** Swathyreddy169@icloud.com
+- **Instagram:** [@label_swathyreddy](https://www.instagram.com/label_swathyreddy?igsh=Z2tkYXVrYmpjNDRy&utm_source=qr)
+- **Domain:** labelbyswathyreddy.com
 
 ## Support
 
