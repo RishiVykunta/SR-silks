@@ -5,15 +5,28 @@ const { corsHeaders, handleCors } = require('../../_lib/cors');
 const { parseBody } = require('../../_lib/request');
 
 module.exports = async (req, res) => {
+  // Log request for debugging
+  console.log('Admin login request:', {
+    method: req.method,
+    url: req.url,
+    path: req.path,
+    headers: req.headers
+  });
+
   // Handle CORS
   const corsResponse = handleCors(req, res);
   if (corsResponse) return corsResponse;
 
   if (req.method !== 'POST') {
+    console.log('Method not allowed:', req.method);
     return {
       statusCode: 405,
       headers: corsHeaders(),
-      body: JSON.stringify({ error: 'Method not allowed' })
+      body: JSON.stringify({ 
+        error: 'Method not allowed',
+        received: req.method,
+        expected: 'POST'
+      })
     };
   }
 
@@ -89,6 +102,7 @@ module.exports = async (req, res) => {
     };
   } catch (error) {
     console.error('Admin login error:', error);
+    console.error('Error stack:', error.stack);
     
     // Check if it's a database connection error
     if (error.code === 'ECONNREFUSED' || error.code === 'ENOTFOUND' || error.message?.includes('connect')) {
@@ -109,7 +123,8 @@ module.exports = async (req, res) => {
         headers: corsHeaders(),
         body: JSON.stringify({ 
           error: 'Database not initialized',
-          message: 'Database tables do not exist. Please initialize the database first by calling /api/init-db'
+          message: 'Database tables do not exist. Please initialize the database first by calling /api/init-db',
+          details: error.message
         })
       };
     }
@@ -119,7 +134,8 @@ module.exports = async (req, res) => {
       headers: corsHeaders(),
       body: JSON.stringify({ 
         error: 'Login failed',
-        message: process.env.NODE_ENV === 'development' ? error.message : 'An error occurred during login'
+        message: error.message || 'An error occurred during login',
+        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
       })
     };
   }
