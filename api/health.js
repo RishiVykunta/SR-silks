@@ -1,5 +1,5 @@
-const { corsHeaders, handleCors } = require('./_lib/cors');
-const { query } = require('./_lib/db');
+const { corsHeaders, handleCors } = require('../handlers/_lib/cors');
+const { query } = require('../handlers/_lib/db');
 
 module.exports = async (req, res) => {
   // Handle CORS

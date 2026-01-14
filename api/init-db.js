@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
-const { query } = require('./_lib/db');
-const { corsHeaders } = require('./_lib/cors');
+const { query } = require('../handlers/_lib/db');
+const { corsHeaders } = require('../handlers/_lib/cors');
 
 module.exports = async function handler(req, res) {
   const send = (status, body) => res.status(status).set(corsHeaders()).json(body);
