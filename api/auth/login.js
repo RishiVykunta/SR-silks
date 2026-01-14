@@ -53,6 +53,18 @@ module.exports = async (req, res) => {
       };
     }
 
+    // Check if JWT_SECRET is set
+    if (!process.env.JWT_SECRET) {
+      return {
+        statusCode: 500,
+        headers: corsHeaders(),
+        body: JSON.stringify({ 
+          error: 'Server configuration error',
+          message: 'JWT_SECRET environment variable is not set'
+        })
+      };
+    }
+
     // Generate token
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES_IN || '7d'
@@ -74,10 +86,38 @@ module.exports = async (req, res) => {
     };
   } catch (error) {
     console.error('Login error:', error);
+    
+    // Check if it's a database connection error
+    if (error.code === 'ECONNREFUSED' || error.code === 'ENOTFOUND' || error.message?.includes('connect')) {
+      return {
+        statusCode: 500,
+        headers: corsHeaders(),
+        body: JSON.stringify({ 
+          error: 'Database connection failed',
+          message: 'Unable to connect to database. Please check DATABASE_URL environment variable.'
+        })
+      };
+    }
+    
+    // Check if table doesn't exist
+    if (error.message?.includes('relation') && error.message?.includes('does not exist')) {
+      return {
+        statusCode: 500,
+        headers: corsHeaders(),
+        body: JSON.stringify({ 
+          error: 'Database not initialized',
+          message: 'Database tables do not exist. Please initialize the database first by calling /api/init-db'
+        })
+      };
+    }
+    
     return {
       statusCode: 500,
       headers: corsHeaders(),
-      body: JSON.stringify({ error: 'Login failed' })
+      body: JSON.stringify({ 
+        error: 'Login failed',
+        message: process.env.NODE_ENV === 'development' ? error.message : 'An error occurred during login'
+      })
     };
   }
 };

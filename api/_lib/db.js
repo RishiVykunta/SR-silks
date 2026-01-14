@@ -6,12 +6,22 @@ let pool = null;
 
 function getPool() {
   if (!pool) {
+    if (!process.env.DATABASE_URL) {
+      throw new Error('DATABASE_URL environment variable is not set');
+    }
+    
+    // Neon requires SSL connections, so always enable SSL
+    // Check if DATABASE_URL contains 'neon' or 'sslmode=require'
+    const requiresSSL = process.env.DATABASE_URL.includes('neon.tech') || 
+                       process.env.DATABASE_URL.includes('sslmode=require') ||
+                       process.env.NODE_ENV === 'production';
+    
     pool = new Pool({
       connectionString: process.env.DATABASE_URL,
-      ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+      ssl: requiresSSL ? { rejectUnauthorized: false } : false,
       max: 1, // Limit connections for serverless
       idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 2000,
+      connectionTimeoutMillis: 10000, // Increased timeout for serverless cold starts
     });
   }
   return pool;
