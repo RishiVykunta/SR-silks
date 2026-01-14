@@ -11,11 +11,14 @@ module.exports = async (req, res) => {
   // If slug not in query, parse from URL path
   if (!slug && req.url) {
     const urlPath = req.url.split('?')[0];
-    const match = urlPath.match(/^\/api\/products\/(.+)$/);
-    if (match) {
-      slug = match[1].split('/');
-    } else if (urlPath === '/api/products' || urlPath === '/api/products/') {
+    // Handle both /api/products and /api/products/ paths
+    if (urlPath === '/api/products' || urlPath === '/api/products/') {
       slug = '';
+    } else {
+      const match = urlPath.match(/^\/api\/products\/(.+)$/);
+      if (match) {
+        slug = match[1].split('/');
+      }
     }
   }
   
