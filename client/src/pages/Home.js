@@ -233,6 +233,25 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Featured Products */}
+      {featuredProducts.length > 0 && (
+        <section className="featured-products section">
+          <div className="container">
+            <h2 className="section-title">Featured Products</h2>
+            <div className="products-grid">
+            {featuredProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onToggleWishlist={toggleWishlist}
+                isInWishlist={isInWishlist(product.id)}
+              />
+            ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* New Arrivals */}
       <section className="new-arrivals section">
         <div className="container">
@@ -289,25 +308,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Featured Products */}
-      {featuredProducts.length > 0 && (
-        <section className="featured-products section">
-          <div className="container">
-            <h2 className="section-title">Featured Products</h2>
-            <div className="products-grid">
-            {featuredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onToggleWishlist={toggleWishlist}
-                isInWishlist={isInWishlist(product.id)}
-              />
-            ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Our Story Section */}
       <section className="about-section section">
