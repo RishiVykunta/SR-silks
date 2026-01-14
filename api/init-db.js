@@ -1,8 +1,11 @@
-const bcrypt = require('bcryptjs');
-const { query, getPool } = require('./_lib/db');
-const { corsHeaders, handleCors } = require('./_lib/cors');
+import bcrypt from 'bcryptjs';
+import { query } from './_lib/db';
+import { corsHeaders } from './_lib/cors';
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
+  const send = (status, body) => res.status(status).set(corsHeaders()).json(body);
+
+
   // Log request for debugging
   console.log('Init DB request:', {
     method: req.method,
@@ -10,34 +13,27 @@ module.exports = async (req, res) => {
     path: req.path
   });
 
-  // Handle CORS
-  const corsResponse = handleCors(req, res);
-  if (corsResponse) return corsResponse;
+  // Handle CORS preflight
+  if (req.method === 'OPTIONS') {
+    return send(200, { message: 'OK' });
+  }
 
   // Allow both GET and POST for easier testing
   if (req.method !== 'POST' && req.method !== 'GET') {
-    return {
-      statusCode: 405,
-      headers: corsHeaders(),
-      body: JSON.stringify({ 
-        error: 'Method not allowed',
-        received: req.method,
-        allowed: ['GET', 'POST']
-      })
-    };
+    return send(405, { 
+      error: 'Method not allowed',
+      received: req.method,
+      allowed: ['GET', 'POST']
+    });
   }
 
   try {
     // Check if DATABASE_URL is set
     if (!process.env.DATABASE_URL) {
-      return {
-        statusCode: 500,
-        headers: corsHeaders(),
-        body: JSON.stringify({ 
-          error: 'DATABASE_URL environment variable is not set',
-          message: 'Please set DATABASE_URL in your Vercel environment variables'
-        })
-      };
+      return send(500, { 
+        error: 'DATABASE_URL environment variable is not set',
+        message: 'Please set DATABASE_URL in your Vercel environment variables'
+      });
     }
 
     // Test database connection
@@ -204,29 +200,21 @@ module.exports = async (req, res) => {
       }
     }
 
-    return {
-      statusCode: 200,
-      headers: corsHeaders(),
-      body: JSON.stringify({
-        message: 'Database initialized successfully',
-        tables: ['users', 'admins', 'products', 'cart', 'wishlist', 'orders', 'order_items'],
-        admin: {
-          email: adminEmail,
-          password: adminCreated ? 'admin123' : 'already exists',
-          created: adminCreated
-        }
-      })
-    };
+    return send(200, {
+      message: 'Database initialized successfully',
+      tables: ['users', 'admins', 'products', 'cart', 'wishlist', 'orders', 'order_items'],
+      admin: {
+        email: adminEmail,
+        password: adminCreated ? 'admin123' : 'already exists',
+        created: adminCreated
+      }
+    });
   } catch (error) {
     console.error('Database initialization error:', error);
-    return {
-      statusCode: 500,
-      headers: corsHeaders(),
-      body: JSON.stringify({ 
-        error: 'Database initialization failed',
-        message: error.message,
-        details: process.env.NODE_ENV === 'development' ? error.stack : undefined
-      })
-    };
+    return send(500, { 
+      error: 'Database initialization failed',
+      message: error.message,
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 };
