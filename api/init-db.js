@@ -1,8 +1,8 @@
-import bcrypt from 'bcryptjs';
-import { query } from './_lib/db';
-import { corsHeaders } from './_lib/cors';
+const bcrypt = require('bcryptjs');
+const { query } = require('./_lib/db');
+const { corsHeaders } = require('./_lib/cors');
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   const send = (status, body) => res.status(status).set(corsHeaders()).json(body);
 
 
