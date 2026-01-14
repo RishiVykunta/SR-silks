@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import api from '../config/api';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -11,11 +12,15 @@ const ForgotPassword = () => {
     setLoading(true);
     setMessage('');
 
-    // TODO: Implement password reset API call
-    setTimeout(() => {
-      setMessage('Password reset instructions have been sent to your email.');
+    try {
+      const response = await api.post('/auth/forgot-password', { email });
+      setMessage(response.data.message || 'Password reset instructions have been sent to your email.');
+    } catch (error) {
+      console.error('Forgot password error:', error);
+      setMessage(error.response?.data?.error || 'An error occurred. Please try again later.');
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (

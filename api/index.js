@@ -77,6 +77,8 @@ module.exports = async (req, res) => {
           handler = require('../handlers/auth/register');
         } else if (routeKey === 'profile') {
           handler = require('../handlers/auth/profile');
+        } else if (routeKey === 'forgot-password' || routeKey === 'forgot_password') {
+          handler = require('../handlers/auth/forgot-password');
         } else {
           return notFound(req, res);
         }
@@ -129,6 +131,9 @@ module.exports = async (req, res) => {
           handler = require('../handlers/wishlist/toggle');
         } else if (routeKey === 'count') {
           handler = require('../handlers/wishlist/count');
+        } else if (restSegments.length === 2 && restSegments[0] === 'remove' && restSegments[1]) {
+          req.query = { ...(req.query || {}), id: restSegments[1] };
+          handler = require('../handlers/wishlist/remove/[id]');
         } else {
           return notFound(req, res);
         }

@@ -50,7 +50,12 @@ const Wishlist = () => {
                 <button
                   className="btn btn-outline"
                   style={{ width: '100%', color: 'var(--error-color)' }}
-                  onClick={() => removeFromWishlist(item.id)}
+                  onClick={async () => {
+                    const result = await removeFromWishlist(item.id || item.product_id);
+                    if (!result.success) {
+                      alert(result.error || 'Failed to remove from wishlist');
+                    }
+                  }}
                 >
                   Remove from Wishlist
                 </button>

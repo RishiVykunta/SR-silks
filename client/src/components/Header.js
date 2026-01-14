@@ -99,7 +99,6 @@ const Header = () => {
                   ) : (
                     <>
                       <span>{user?.first_name || user?.email}</span>
-                      <Link to="/profile">Profile</Link>
                       <button onClick={handleLogout}>Logout</button>
                     </>
                   )}
