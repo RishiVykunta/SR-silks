@@ -14,7 +14,10 @@ const Collection = () => {
   const loadCollection = useCallback(async () => {
     try {
       setLoading(true);
-      let url = `/products?collection=${collectionName}`;
+      // Convert URL format (with hyphens) to database format (with spaces)
+      // e.g., "Special-Occasions" -> "Special Occasions"
+      const collectionParam = collectionName ? collectionName.replace(/-/g, ' ') : collectionName;
+      let url = `/products?collection=${encodeURIComponent(collectionParam)}`;
       if (collectionName === 'Celebrate' && priceFilter) {
         url = `/products/celebrate?price_filter=${priceFilter}`;
       } else if (priceFilter) {
@@ -30,6 +33,8 @@ const Collection = () => {
   }, [collectionName, priceFilter]);
 
   useEffect(() => {
+    // Scroll to top when collection changes
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     loadCollection();
   }, [loadCollection]);
 
