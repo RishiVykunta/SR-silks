@@ -201,7 +201,7 @@ const Home = () => {
           <div className="category-grid">
             <Link to="/collection/Formal" className="category-card">
               <div className="category-image">
-                <img src="https://res.cloudinary.com/dbaiaiwkk/image/upload/v1761843271/WhatsApp_Image_2025-10-30_at_21.48.25_78377178_xhcdlv.jpg" alt="Formal" />
+                <img src="https://res.cloudinary.com/dqcxekzxn/image/upload/v1768423438/download_1_dangr9.jpg" alt="Formal" />
               </div>
               <h3>FORMAL</h3>
             </Link>
