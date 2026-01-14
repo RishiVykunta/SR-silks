@@ -207,25 +207,25 @@ const Home = () => {
             </Link>
             <Link to="/collection/Party" className="category-card">
               <div className="category-image">
-                <img src="https://res.cloudinary.com/dbaiaiwkk/image/upload/v1761843271/WhatsApp_Image_2025-10-30_at_21.48.25_7b5df568_facggo.jpg" alt="Party" />
+                <img src="https://res.cloudinary.com/dqcxekzxn/image/upload/c_crop,g_face,h_800,w_800,y_0/v1768423978/Elegant_Mauve_Embroidered_Saree_Look_Perfect_for_Weddings_or_Editorial_Shoots_ia9aia.jpg" alt="Party" />
               </div>
               <h3>PARTY</h3>
             </Link>
             <Link to="/collection/Casual" className="category-card">
               <div className="category-image">
-                <img src="https://res.cloudinary.com/dbaiaiwkk/image/upload/v1761843271/WhatsApp_Image_2025-10-30_at_21.48.26_a9979924_oz0ydd.jpg" alt="Casual" />
+                <img src="https://res.cloudinary.com/dqcxekzxn/image/upload/c_crop,g_face,h_800,w_800,y_0/v1768424210/Crafts_Moda_Blue_Cotton_Saree_for_women_Hand_Block_Bagru_Print_Floral_Print_Saree_with_Blouse_Piece_x6iu5m.jpg" alt="Casual" />
               </div>
               <h3>CASUAL</h3>
             </Link>
             <Link to="/collection/Traditional" className="category-card">
               <div className="category-image">
-                <img src="https://res.cloudinary.com/dbaiaiwkk/image/upload/v1761843271/WhatsApp_Image_2025-10-30_at_21.48.26_912a1562_aus7nx.jpg" alt="Traditional" />
+                <img src="https://res.cloudinary.com/dqcxekzxn/image/upload/c_crop,g_face,h_800,w_800,y_0/v1768424304/download_1_ucmder.jpg" alt="Traditional" />
               </div>
               <h3>TRADITIONAL</h3>
             </Link>
             <Link to="/collection/Special-Occasions" className="category-card">
               <div className="category-image">
-                <img src="https://res.cloudinary.com/dbaiaiwkk/image/upload/v1761843271/WhatsApp_Image_2025-10-30_at_21.48.26_577863cb_ruqp76.jpg" alt="Special Occasions" />
+                <img src="https://res.cloudinary.com/dqcxekzxn/image/upload/c_crop,g_face,h_800,w_800,y_0/v1768424434/download_2_al4ast.jpg" alt="Special Occasions" />
               </div>
               <h3>SPECIAL OCCASIONS</h3>
             </Link>
