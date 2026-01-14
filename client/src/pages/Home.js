@@ -604,9 +604,10 @@ const Home = () => {
 
         .products-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-          gap: 2.5rem;
+          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+          gap: 1.5rem;
           padding: 1rem 0;
+          justify-items: center;
         }
 
         .text-center {
@@ -1071,8 +1072,12 @@ const Home = () => {
 
           .products-grid {
             grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
+            gap: 1rem;
             padding: 1rem 15px;
+          }
+          
+          .product-card {
+            max-width: 100%;
           }
 
           .about-section {
@@ -1312,14 +1317,14 @@ const ProductCard = ({ product, onToggleWishlist, isInWishlist }) => {
       <style>{`
         .product-card {
           background: white;
-          border-radius: 20px;
+          border-radius: 12px;
           overflow: hidden;
-          box-shadow: var(--shadow-md);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
           transition: var(--transition);
           border: 1px solid var(--border-color);
           position: relative;
-          width: 421px;
-          height: 775px;
+          width: 100%;
+          max-width: 280px;
           display: flex;
           flex-direction: column;
         }
@@ -1388,14 +1393,14 @@ const ProductCard = ({ product, onToggleWishlist, isInWishlist }) => {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 42px;
-          height: 42px;
+          width: 36px;
+          height: 36px;
           background: white;
           color: #ef4444;
           border: 2px solid #ef4444;
           border-radius: 50%;
           cursor: pointer;
-          font-size: 22px;
+          font-size: 18px;
           transition: all 0.3s ease;
           box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
           padding: 0;
@@ -1409,18 +1414,22 @@ const ProductCard = ({ product, onToggleWishlist, isInWishlist }) => {
         }
 
         .product-info {
-          padding: 1.5rem;
+          padding: 1rem;
           flex: 1;
           display: flex;
           flex-direction: column;
         }
 
         .product-info h3 {
-          margin-bottom: 0.8rem;
-          font-size: 1.1rem;
+          margin-bottom: 0.6rem;
+          font-size: 0.95rem;
           font-weight: 600;
-          line-height: 1.4;
-          min-height: 3em;
+          line-height: 1.3;
+          min-height: 2.6em;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
 
         .product-info a {
@@ -1434,21 +1443,21 @@ const ProductCard = ({ product, onToggleWishlist, isInWishlist }) => {
         }
 
         .product-price {
-          margin-bottom: 1.2rem;
+          margin-bottom: 0.8rem;
           display: flex;
           align-items: center;
-          gap: 0.8rem;
+          gap: 0.5rem;
           flex-wrap: wrap;
         }
 
         .old-price {
           text-decoration: line-through;
           color: var(--text-muted);
-          font-size: 0.95rem;
+          font-size: 0.85rem;
         }
 
         .current-price {
-          font-size: 1.4rem;
+          font-size: 1.15rem;
           font-weight: 700;
           background: var(--gradient-primary);
           -webkit-background-clip: text;
@@ -1467,8 +1476,8 @@ const ProductCard = ({ product, onToggleWishlist, isInWishlist }) => {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 42px;
-          height: 42px;
+          width: 36px;
+          height: 36px;
           background: #22c55e;
           color: white;
           border-radius: 50%;
@@ -1484,13 +1493,13 @@ const ProductCard = ({ product, onToggleWishlist, isInWishlist }) => {
         }
 
         .whatsapp-btn svg {
-          width: 20px;
-          height: 20px;
+          width: 18px;
+          height: 18px;
         }
 
         @media (max-width: 768px) {
           .product-card {
-            border-radius: 12px;
+            border-radius: 10px;
             max-width: 100%;
             width: 100%;
             height: auto;

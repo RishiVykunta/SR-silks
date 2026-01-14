@@ -40,18 +40,27 @@ module.exports = async (req, res) => {
     }
 
     if (collection) {
-      // Check if collection matches occasion types (Formal, Party, Casual, Traditional, Special Occasions)
-      const occasionTypes = ['Formal', 'Party', 'Casual', 'Traditional', 'Special Occasions'];
-      if (occasionTypes.includes(collection)) {
-        // Filter by occasion_type for these collections
-        whereConditions.push(`occasion_type = $${paramIndex}`);
+      // Check if collection matches categories (Silk, Banarasi, Designer, Bridal, Party)
+      const categories = ['Silk', 'Banarasi', 'Designer', 'Bridal', 'Party'];
+      if (categories.includes(collection)) {
+        // Filter by category for these collections
+        whereConditions.push(`category = $${paramIndex}`);
         params.push(collection);
         paramIndex++;
       } else {
-        // For other collections (like Celebrate), filter by collection_name
-        whereConditions.push(`collection_name = $${paramIndex}`);
-        params.push(collection);
-        paramIndex++;
+        // Check if collection matches occasion types (Formal, Party, Casual, Traditional, Special Occasions)
+        const occasionTypes = ['Formal', 'Party', 'Casual', 'Traditional', 'Special Occasions'];
+        if (occasionTypes.includes(collection)) {
+          // Filter by occasion_type for these collections
+          whereConditions.push(`occasion_type = $${paramIndex}`);
+          params.push(collection);
+          paramIndex++;
+        } else {
+          // For other collections (like Celebrate), filter by collection_name
+          whereConditions.push(`collection_name = $${paramIndex}`);
+          params.push(collection);
+          paramIndex++;
+        }
       }
     }
 
