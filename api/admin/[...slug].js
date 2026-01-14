@@ -11,9 +11,17 @@ module.exports = async (req, res) => {
   // If slug not in query, parse from URL path
   if (!slug && req.url) {
     const urlPath = req.url.split('?')[0]; // Remove query string
-    const match = urlPath.match(/^\/api\/admin\/(.+)$/);
+    const match = urlPath.match(/\/api\/admin\/(.+)$/);
     if (match) {
       slug = match[1].split('/');
+    }
+  }
+  
+  // Also check req.path if available (Vercel sometimes uses this)
+  if (!slug && req.path) {
+    const pathMatch = req.path.match(/\/api\/admin\/(.+)$/);
+    if (pathMatch) {
+      slug = pathMatch[1].split('/');
     }
   }
   

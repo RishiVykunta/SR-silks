@@ -11,11 +11,25 @@ module.exports = async (req, res) => {
   // If slug not in query, parse from URL path
   if (!slug && req.url) {
     const urlPath = req.url.split('?')[0];
-    const match = urlPath.match(/^\/api\/wishlist\/(.+)$/);
-    if (match) {
-      slug = match[1].split('/');
-    } else if (urlPath === '/api/wishlist' || urlPath === '/api/wishlist/') {
+    if (urlPath === '/api/wishlist' || urlPath === '/api/wishlist/') {
       slug = '';
+    } else {
+      const match = urlPath.match(/\/api\/wishlist\/(.+)$/);
+      if (match) {
+        slug = match[1].split('/');
+      }
+    }
+  }
+  
+  // Also check req.path if available (Vercel sometimes uses this)
+  if (!slug && req.path) {
+    if (req.path === '/api/wishlist' || req.path === '/api/wishlist/') {
+      slug = '';
+    } else {
+      const pathMatch = req.path.match(/\/api\/wishlist\/(.+)$/);
+      if (pathMatch) {
+        slug = pathMatch[1].split('/');
+      }
     }
   }
   

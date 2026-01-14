@@ -15,16 +15,23 @@ module.exports = async (req, res) => {
     if (urlPath === '/api/products' || urlPath === '/api/products/') {
       slug = '';
     } else {
-      const match = urlPath.match(/^\/api\/products\/(.+)$/);
+      // Try to extract path after /api/products/
+      const match = urlPath.match(/\/api\/products\/(.+)$/);
       if (match) {
         slug = match[1].split('/');
-      } else {
-        // If no match, try to get from req.path or req.url
-        const pathMatch = (req.path || req.url || '').match(/\/api\/products\/(.+)$/);
-        if (pathMatch) {
-          slug = pathMatch[1].split('/');
-        }
+      } else if (urlPath.startsWith('/api/products')) {
+        slug = '';
       }
+    }
+  }
+  
+  // Also check req.path if available (Vercel sometimes uses this)
+  if (!slug && req.path) {
+    const pathMatch = req.path.match(/\/api\/products\/(.+)$/);
+    if (pathMatch) {
+      slug = pathMatch[1].split('/');
+    } else if (req.path === '/api/products' || req.path === '/api/products/') {
+      slug = '';
     }
   }
   
