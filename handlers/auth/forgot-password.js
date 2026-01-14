@@ -1,6 +1,10 @@
+const crypto = require('crypto');
 const { query } = require('../_lib/db');
 const { corsHeaders, handleCors } = require('../_lib/cors');
 const { parseBody } = require('../_lib/request');
+const { Resend } = require('resend');
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 module.exports = async (req, res) => {
   const corsResponse = handleCors(req, res);
@@ -24,8 +28,10 @@ module.exports = async (req, res) => {
       };
     }
 
+    const normalizedEmail = email.toLowerCase().trim();
+
     // Check if user exists
-    const userResult = await query('SELECT * FROM users WHERE email = $1', [email.toLowerCase().trim()]);
+    const userResult = await query('SELECT * FROM users WHERE email = $1', [normalizedEmail]);
     
     if (userResult.rows.length === 0) {
       // Don't reveal if email exists or not for security
@@ -38,27 +44,50 @@ module.exports = async (req, res) => {
       };
     }
 
-    // Generate a simple reset token (in production, use crypto.randomBytes)
-    const resetToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    // Generate secure reset token
+    const resetToken = crypto.randomBytes(32).toString('hex');
     const resetTokenExpiry = new Date(Date.now() + 3600000); // 1 hour from now
 
-    // Store reset token in database (you'll need to add reset_token and reset_token_expiry columns)
-    // For now, we'll just log it. In production, you should:
-    // 1. Add reset_token and reset_token_expiry columns to users table
-    // 2. Store the token: await query('UPDATE users SET reset_token = $1, reset_token_expiry = $2 WHERE email = $3', [resetToken, resetTokenExpiry, email]);
-    // 3. Send email with reset link using a service like SendGrid, AWS SES, or Nodemailer
+    // Store reset token in database
+    await query(
+      'UPDATE users SET reset_token = $1, reset_token_expiry = $2 WHERE email = $3',
+      [resetToken, resetTokenExpiry, normalizedEmail]
+    );
 
-    console.log('Password reset requested for:', email);
-    console.log('Reset token (for development):', resetToken);
-    console.log('Reset link would be:', `${process.env.FRONTEND_URL || 'https://sr-silks.vercel.app'}/reset-password?token=${resetToken}`);
+    // Create reset link
+    const frontendUrl = process.env.FRONTEND_URL || 'https://sr-silks.vercel.app';
+    const resetLink = `${frontendUrl}/reset-password?token=${resetToken}`;
 
-    // TODO: Send email with reset link
-    // Example using a service:
-    // await sendEmail({
-    //   to: email,
-    //   subject: 'Password Reset Instructions',
-    //   html: `Click here to reset your password: ${resetLink}`
-    // });
+    // Send email with reset link
+    try {
+      if (process.env.RESEND_API_KEY) {
+        await resend.emails.send({
+          from: process.env.RESEND_FROM_EMAIL || 'SR Silks <noreply@sr-silks.com>',
+          to: normalizedEmail,
+          subject: 'Password Reset Instructions - SR Silks',
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+              <h2 style="color: #D4AF37;">Password Reset Request</h2>
+              <p>Hello,</p>
+              <p>You requested to reset your password for your SR Silks account. Click the button below to reset your password:</p>
+              <div style="text-align: center; margin: 30px 0;">
+                <a href="${resetLink}" style="background-color: #D4AF37; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">Reset Password</a>
+              </div>
+              <p>Or copy and paste this link into your browser:</p>
+              <p style="word-break: break-all; color: #666;">${resetLink}</p>
+              <p style="color: #999; font-size: 12px; margin-top: 30px;">This link will expire in 1 hour. If you didn't request this, please ignore this email.</p>
+              <p style="color: #999; font-size: 12px;">Best regards,<br>SR Silks Team</p>
+            </div>
+          `
+        });
+      } else {
+        // Fallback: log the reset link if Resend is not configured
+        console.log('RESEND_API_KEY not set. Reset link for', normalizedEmail, ':', resetLink);
+      }
+    } catch (emailError) {
+      console.error('Email sending error:', emailError);
+      // Don't fail the request if email fails - still return success for security
+    }
 
     return {
       statusCode: 200,

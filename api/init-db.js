@@ -50,9 +50,30 @@ async function initDbHandler(req, res) {
         first_name VARCHAR(100),
         last_name VARCHAR(100),
         phone VARCHAR(20),
+        reset_token VARCHAR(255),
+        reset_token_expiry TIMESTAMP,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
+    `);
+
+    // Add reset_token columns if they don't exist (for existing databases)
+    await query(`
+      DO $$ 
+      BEGIN 
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns 
+          WHERE table_name='users' AND column_name='reset_token'
+        ) THEN
+          ALTER TABLE users ADD COLUMN reset_token VARCHAR(255);
+        END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns 
+          WHERE table_name='users' AND column_name='reset_token_expiry'
+        ) THEN
+          ALTER TABLE users ADD COLUMN reset_token_expiry TIMESTAMP;
+        END IF;
+      END $$;
     `);
 
     // Create admins table

@@ -62,7 +62,7 @@ A complete full-stack e-commerce website for designer sarees built with React fr
 
 3. **Configure environment variables**
 
-   Create a `.env` file in the root directory (copy from `.env.example`):
+   Create a `.env` file in the root directory:
    ```env
    DATABASE_URL=your_neon_postgresql_connection_string
    JWT_SECRET=your_jwt_secret_key_here
@@ -70,7 +70,12 @@ A complete full-stack e-commerce website for designer sarees built with React fr
    CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
    CLOUDINARY_API_KEY=your_cloudinary_api_key
    CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+   RESEND_API_KEY=your_resend_api_key
+   RESEND_FROM_EMAIL=SR Silks <noreply@yourdomain.com>
+   FRONTEND_URL=https://sr-silks.vercel.app
    ```
+   
+   **Note**: For password reset emails to work, you need to set up Resend (see Password Reset Setup below).
 
 4. **Start development server**
    ```bash
@@ -194,7 +199,71 @@ A complete full-stack e-commerce website for designer sarees built with React fr
 | `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name | Yes | Your Cloudinary cloud name |
 | `CLOUDINARY_API_KEY` | Cloudinary API key | Yes | Your Cloudinary API key |
 | `CLOUDINARY_API_SECRET` | Cloudinary API secret | Yes | Your Cloudinary API secret |
+| `RESEND_API_KEY` | Resend API key for email sending | Yes (for password reset) | Your Resend API key |
+| `RESEND_FROM_EMAIL` | Email address for sending emails | Yes (for password reset) | `SR Silks <noreply@yourdomain.com>` |
+| `FRONTEND_URL` | Frontend URL for reset links | Yes (for password reset) | `https://sr-silks.vercel.app` |
 | `REACT_APP_API_URL` | API URL for React app (local dev only) | No | `http://localhost:5000/api` |
+
+## Password Reset Setup (Forgot Password Feature)
+
+The forgot password feature uses [Resend](https://resend.com) for sending password reset emails. Resend offers a free tier with 100 emails per day, which is perfect for Vercel Hobby plan.
+
+### Step 1: Create Resend Account
+
+1. **Sign up for Resend**
+   - Go to [https://resend.com](https://resend.com)
+   - Click "Sign Up" and create a free account
+   - Verify your email address
+
+2. **Get Your API Key**
+   - After logging in, go to **API Keys** in the dashboard
+   - Click **Create API Key**
+   - Give it a name (e.g., "SR Silks Production")
+   - Copy the API key (you'll only see it once!)
+
+3. **Add Domain (Optional but Recommended)**
+   - Go to **Domains** in the dashboard
+   - Click **Add Domain**
+   - Follow the DNS setup instructions to verify your domain
+   - This allows you to send from `noreply@yourdomain.com` instead of `onboarding@resend.dev`
+
+### Step 2: Configure Environment Variables
+
+Add these to your Vercel environment variables:
+
+```env
+RESEND_API_KEY=re_your_api_key_here
+RESEND_FROM_EMAIL=SR Silks <noreply@yourdomain.com>
+FRONTEND_URL=https://sr-silks.vercel.app
+```
+
+**Note**: 
+- If you haven't set up a custom domain with Resend, use `onboarding@resend.dev` as the `RESEND_FROM_EMAIL`
+- The `FRONTEND_URL` should match your Vercel deployment URL
+
+### Step 3: Test Password Reset
+
+1. **Redeploy your application** after adding the environment variables
+2. **Test the flow**:
+   - Go to `/forgot-password` page
+   - Enter a registered user's email
+   - Check the email inbox for the reset link
+   - Click the link and reset the password
+
+### How It Works
+
+1. User requests password reset at `/forgot-password`
+2. System generates a secure token and stores it in the database (expires in 1 hour)
+3. Email is sent via Resend with a reset link
+4. User clicks the link and is taken to `/reset-password?token=...`
+5. User enters new password
+6. Password is updated and reset token is cleared
+
+**Security Features**:
+- Tokens expire after 1 hour
+- Tokens are cryptographically secure (32-byte random)
+- Tokens are single-use (cleared after password reset)
+- Invalid/expired tokens are rejected
 
 ## Project Structure
 
@@ -244,6 +313,9 @@ SR-silks/
 - `POST /api/auth/login` - User login
 - `POST /api/auth/admin/login` - Admin login
 - `GET /api/auth/profile` - Get user profile (authenticated)
+- `POST /api/auth/forgot-password` - Request password reset
+- `GET /api/auth/reset-password` - Verify reset token
+- `POST /api/auth/reset-password` - Reset password with token
 
 ### Products
 - `GET /api/products` - Get all products (with filters)

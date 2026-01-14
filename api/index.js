@@ -79,6 +79,8 @@ module.exports = async (req, res) => {
           handler = require('../handlers/auth/profile');
         } else if (routeKey === 'forgot-password' || routeKey === 'forgot_password') {
           handler = require('../handlers/auth/forgot-password');
+        } else if (routeKey === 'reset-password' || routeKey === 'reset_password') {
+          handler = require('../handlers/auth/reset-password');
         } else {
           return notFound(req, res);
         }

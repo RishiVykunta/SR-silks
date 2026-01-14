@@ -15,6 +15,7 @@ import Wishlist from './pages/Wishlist';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import AdminDashboard from './pages/Admin/Dashboard';
 import AdminProducts from './pages/Admin/Products';
 import AdminOrders from './pages/Admin/Orders';
@@ -38,6 +39,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/products" element={<AdminProducts />} />
                 <Route path="/admin/products/new" element={<ProductForm />} />
