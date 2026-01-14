@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }) => {
 
   const adminLogin = async (email, password) => {
     try {
-      const response = await api.post('/auth/admin/login', { email, password });
+      const response = await api.post('/admin/login', { email, password });
       const { token, admin } = response.data;
 
       localStorage.setItem('adminToken', token);
