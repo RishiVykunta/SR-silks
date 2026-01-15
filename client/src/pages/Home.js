@@ -225,7 +225,7 @@ const Home = () => {
             </Link>
             <Link to="/collection/Special-Occasions" className="category-card">
               <div className="category-image">
-                <img src="https://res.cloudinary.com/dqcxekzxn/image/upload/c_crop,g_face,h_600,w_600/v1768424434/download_2_al4ast.jpg" alt="Special Occasions" />
+                <img src="https://res.cloudinary.com/dqcxekzxn/image/upload/c_crop,g_face,h_800,w_800,y_0/v1768424434/download_2_al4ast.jpg" alt="Special Occasions" />
               </div>
               <h3>SPECIAL OCCASIONS</h3>
             </Link>
@@ -1264,9 +1264,13 @@ const ProductCard = ({ product, onToggleWishlist, isInWishlist }) => {
 
   const images = product.images && product.images.length > 0 ? product.images : ['/placeholder.jpg'];
 
+  const handleProductClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="product-card">
-      <Link to={`/product/${product.id}`} className="product-image-link">
+      <Link to={`/product/${product.id}`} className="product-image-link" onClick={handleProductClick}>
         {images.map((image, index) => (
           <img
             key={index}
@@ -1283,7 +1287,7 @@ const ProductCard = ({ product, onToggleWishlist, isInWishlist }) => {
       </Link>
       <div className="product-info">
         <h3>
-          <Link to={`/product/${product.id}`}>{product.name}</Link>
+          <Link to={`/product/${product.id}`} onClick={handleProductClick}>{product.name}</Link>
         </h3>
         <div className="product-price">
           {discountPrice && (

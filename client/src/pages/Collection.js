@@ -38,6 +38,10 @@ const Collection = () => {
     loadCollection();
   }, [loadCollection]);
 
+  const handleProductClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   if (loading) return <div className="loading">Loading collection...</div>;
 
   return (
@@ -173,7 +177,7 @@ const Collection = () => {
         ) : (
           products.map(product => (
             <div key={product.id} className="product-card" style={{ background: 'white', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)', width: '100%', maxWidth: '280px', display: 'flex', flexDirection: 'column' }}>
-              <Link to={`/product/${product.id}`}>
+              <Link to={`/product/${product.id}`} onClick={handleProductClick}>
                 <img
                   src={product.images?.[0] || '/placeholder.jpg'}
                   alt={product.name}
@@ -182,7 +186,7 @@ const Collection = () => {
               </Link>
               <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
                 <h3 style={{ marginBottom: '0.6rem', fontSize: '0.95rem', fontWeight: '600', lineHeight: '1.3', minHeight: '2.6em', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                  <Link to={`/product/${product.id}`} style={{ color: 'var(--text-color)', textDecoration: 'none' }}>{product.name}</Link>
+                  <Link to={`/product/${product.id}`} onClick={handleProductClick} style={{ color: 'var(--text-color)', textDecoration: 'none' }}>{product.name}</Link>
                 </h3>
                 <div style={{ marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                   {product.discount_price && <span style={{ textDecoration: 'line-through', color: 'var(--text-light)', fontSize: '0.85rem' }}>₹{parseFloat(product.price || 0).toFixed(2)}</span>}

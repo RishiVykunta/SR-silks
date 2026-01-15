@@ -32,6 +32,8 @@ const ProductDetail = () => {
 
   useEffect(() => {
     loadProduct();
+    // Scroll to top when product page loads
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [loadProduct]);
 
 

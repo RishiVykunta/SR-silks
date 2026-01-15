@@ -388,16 +388,20 @@ const ProductCard = ({ product, onToggleWishlist, isInWishlist }) => {
   const whatsappMessage = `Hello! I'm interested in ${product.name} - ₹${finalPrice.toFixed(2)}`;
   const whatsappUrl = `https://wa.me/91${BRAND_INFO.contact.whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
 
+  const handleProductClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="product-card">
-      <Link to={`/product/${product.id}`} className="product-image-link">
+      <Link to={`/product/${product.id}`} className="product-image-link" onClick={handleProductClick}>
         <img src={product.images?.[0] || '/placeholder.jpg'} alt={product.name} />
         {discountPercentage > 0 && (
           <span className="discount-badge">{discountPercentage}% OFF</span>
         )}
       </Link>
       <div className="product-info">
-        <h3><Link to={`/product/${product.id}`}>{product.name}</Link></h3>
+        <h3><Link to={`/product/${product.id}`} onClick={handleProductClick}>{product.name}</Link></h3>
         <div className="product-price">
           {discountPrice && <span className="old-price">₹{price.toFixed(2)}</span>}
           <span className="current-price">₹{isNaN(finalPrice) ? '0.00' : finalPrice.toFixed(2)}</span>

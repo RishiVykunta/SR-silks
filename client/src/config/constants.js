@@ -1,7 +1,7 @@
 export const BRAND_INFO = {
   name: 'Label by Swathy Reddy',
   domain: 'labelbyswathyreddy.com',
-  logo: 'https://res.cloudinary.com/dqcxekzxn/image/upload/v1768050182/WhatsApp_Image_2026-01-08_at_6.04.11_PM_pjnnuu.jpg',
+  logo: 'https://res.cloudinary.com/dqcxekzxn/image/upload/v1768493188/WhatsApp_Image_2026-01-15_at_1_LE_upscale_ultra_size_of_changes_0_intensity_10_ncaydq.jpg',
   founder: {
     name: 'Swathy Reddy',
     image: 'https://res.cloudinary.com/dqcxekzxn/image/upload/v1768050059/WhatsApp_Image_2026-01-07_at_10.49.55_PM_rj5nst.jpg',
