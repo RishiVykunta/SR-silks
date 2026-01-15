@@ -95,23 +95,16 @@ const Collection = () => {
             }
 
             .product-card {
-              width: 100%;
-              max-width: 100%;
+              width: 100% !important;
+              max-width: 100% !important;
               border-radius: 10px;
             }
 
-            .product-card a:first-child {
-              display: block;
-              position: relative;
-              aspect-ratio: 3/4;
-              overflow: hidden;
-              background: var(--light-color);
-            }
-
             .product-card img {
-              width: 100%;
-              height: 100%;
-              object-fit: cover;
+              width: 100% !important;
+              max-width: 100% !important;
+              aspect-ratio: 3/4 !important;
+              object-fit: cover !important;
               display: block;
             }
 
@@ -185,11 +178,11 @@ const Collection = () => {
         ) : (
           products.map(product => (
             <div key={product.id} className="product-card" style={{ background: 'white', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)', width: '100%', maxWidth: '280px', display: 'flex', flexDirection: 'column' }}>
-              <Link to={`/product/${product.id}`} onClick={handleProductClick} style={{ display: 'block', position: 'relative', aspectRatio: '3/4', overflow: 'hidden', background: 'var(--light-color)' }}>
+              <Link to={`/product/${product.id}`} onClick={handleProductClick}>
                 <img
                   src={product.images?.[0] || '/placeholder.jpg'}
                   alt={product.name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover' }}
                 />
               </Link>
               <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
