@@ -320,7 +320,7 @@ const Home = () => {
             <div className="about-text">
               <div className="about-paragraphs">
                 <p>Rooted in the vibrant culture of Hyderabad, Swathy Reddy is a designer-led saree brand born from creativity, passion, and a deep respect for Indian craftsmanship.</p>
-                <p>Founded 8 years ago by designer Swathy Reddy, the brand began with a simple yet powerful vision—to create sarees that blend timeless tradition with modern design sensibilities. With a trained eye for detail and aesthetics, Swathy personally designs and curates every piece, ensuring each saree carries her signature of elegance and originality.</p>
+                <p>Founded 14 years ago by designer Swathy Reddy, the brand began with a simple yet powerful vision—to create sarees that blend timeless tradition with modern design sensibilities. With a trained eye for detail and aesthetics, Swathy personally designs and curates every piece, ensuring each saree carries her signature of elegance and originality.</p>
                 <p>For her, a saree is more than fabric—it is a canvas. A canvas where heritage weaves meet contemporary silhouettes, where rich textures, colours, and patterns come together to tell a story of grace and individuality.</p>
                 <p>At Swathy Reddy, every creation reflects thoughtful design, premium fabrics, and meticulous craftsmanship. From bespoke bridal drapes to elegant festive and everyday wear, our sarees are designed to make women feel confident, empowered, and timelessly beautiful.</p>
                 <p>After eight fulfilling years, the brand continues to evolve—guided by creativity, inspired by tradition, and driven by a commitment to quality and authenticity.</p>
