@@ -225,7 +225,7 @@ const Home = () => {
             </Link>
             <Link to="/collection/Special-Occasions" className="category-card">
               <div className="category-image">
-                <img src="https://res.cloudinary.com/dqcxekzxn/image/upload/c_crop,g_face,h_800,w_800,y_-200/v1768424434/download_2_al4ast.jpg" alt="Special Occasions" />
+                <img src="https://res.cloudinary.com/dqcxekzxn/image/upload/c_crop,g_auto:face,h_800,w_800/v1768424434/download_2_al4ast.jpg" alt="Special Occasions" />
               </div>
               <h3>SPECIAL OCCASIONS</h3>
             </Link>
