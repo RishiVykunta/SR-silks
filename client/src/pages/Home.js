@@ -1059,6 +1059,16 @@ const Home = () => {
             width: 120px;
             height: 120px;
             max-width: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          }
+
+          .category-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
           }
 
           .category-card {
