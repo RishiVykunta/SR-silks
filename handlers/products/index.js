@@ -34,35 +34,42 @@ module.exports = async (req, res) => {
     let paramIndex = 1;
 
     if (category) {
-      whereConditions.push(`category = $${paramIndex}`);
+      // Use case-insensitive matching for category
+      whereConditions.push(`LOWER(category) = LOWER($${paramIndex})`);
       params.push(category);
       paramIndex++;
     }
 
     if (collection) {
-      // Normalize collection name: convert hyphens to spaces (e.g., "Special-Occasions" -> "Special Occasions")
-      const normalizedCollection = collection.replace(/-/g, ' ');
+      // Normalize collection name: convert hyphens to spaces and trim whitespace
+      // e.g., "Special-Occasions" -> "Special Occasions"
+      const normalizedCollection = collection.replace(/-/g, ' ').trim();
       
       // Check if collection matches occasion types FIRST (Formal, Party, Casual, Traditional, Special Occasions)
       // These should be filtered by occasion_type field
+      // Use case-insensitive comparison
       const occasionTypes = ['Formal', 'Party', 'Casual', 'Traditional', 'Special Occasions'];
-      if (occasionTypes.includes(normalizedCollection)) {
-        // Filter by occasion_type for these collections
-        whereConditions.push(`occasion_type = $${paramIndex}`);
+      const normalizedLower = normalizedCollection.toLowerCase();
+      const matchesOccasionType = occasionTypes.some(ot => ot.toLowerCase() === normalizedLower);
+      
+      if (matchesOccasionType) {
+        // Filter by occasion_type for these collections (case-insensitive using ILIKE)
+        whereConditions.push(`LOWER(occasion_type) = LOWER($${paramIndex})`);
         params.push(normalizedCollection);
         paramIndex++;
       } else {
         // Check if collection matches categories (Silk, Banarasi, Designer, Bridal)
         // Note: Party is NOT in categories - it's an occasion type
         const categories = ['Silk', 'Banarasi', 'Designer', 'Bridal'];
-        if (categories.includes(normalizedCollection)) {
-          // Filter by category for these collections
-          whereConditions.push(`category = $${paramIndex}`);
+        const matchesCategory = categories.some(cat => cat.toLowerCase() === normalizedLower);
+        if (matchesCategory) {
+          // Filter by category for these collections (case-insensitive)
+          whereConditions.push(`LOWER(category) = LOWER($${paramIndex})`);
           params.push(normalizedCollection);
           paramIndex++;
         } else {
-          // For other collections (like Celebrate), filter by collection_name
-          whereConditions.push(`collection_name = $${paramIndex}`);
+          // For other collections (like Celebrate), filter by collection_name (case-insensitive)
+          whereConditions.push(`LOWER(collection_name) = LOWER($${paramIndex})`);
           params.push(normalizedCollection);
           paramIndex++;
         }
