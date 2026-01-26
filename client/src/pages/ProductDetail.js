@@ -203,14 +203,43 @@ const ProductDetail = () => {
       {relatedProducts.length > 0 && (
         <section className="related-products section">
           <h2 className="section-title">Related Products</h2>
-          <div className="products-grid">
-            {relatedProducts.map((relatedProduct) => (
-              <Link key={relatedProduct.id} to={`/product/${relatedProduct.id}`} className="product-card">
-                <img src={relatedProduct.images?.[0] || '/placeholder.jpg'} alt={relatedProduct.name} />
-                <h3>{relatedProduct.name}</h3>
-                <p>₹{relatedProduct.discount_price || relatedProduct.price}</p>
-              </Link>
-            ))}
+          <div className="related-products-grid">
+            {relatedProducts.map((relatedProduct) => {
+              const finalPrice = parseFloat(relatedProduct.discount_price || relatedProduct.price || 0);
+              const originalPrice = relatedProduct.discount_price ? parseFloat(relatedProduct.price || 0) : null;
+              const discountPercentage = relatedProduct.discount_price && relatedProduct.price
+                ? Math.round(((relatedProduct.price - relatedProduct.discount_price) / relatedProduct.price) * 100)
+                : 0;
+              
+              return (
+                <Link 
+                  key={relatedProduct.id} 
+                  to={`/product/${relatedProduct.id}`} 
+                  className="related-product-card"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                  <div className="related-product-image-wrapper">
+                    <img 
+                      src={relatedProduct.images?.[0] || '/placeholder.jpg'} 
+                      alt={relatedProduct.name}
+                      className="related-product-image"
+                    />
+                    {discountPercentage > 0 && (
+                      <span className="related-product-discount-badge">{discountPercentage}% OFF</span>
+                    )}
+                  </div>
+                  <div className="related-product-info">
+                    <h3 className="related-product-name">{relatedProduct.name}</h3>
+                    <div className="related-product-price">
+                      {originalPrice && (
+                        <span className="related-product-old-price">₹{originalPrice.toFixed(2)}</span>
+                      )}
+                      <span className="related-product-current-price">₹{finalPrice.toFixed(2)}</span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </section>
       )}
@@ -407,10 +436,116 @@ const ProductDetail = () => {
           border-top: 1px solid var(--border-color);
         }
 
-        .products-grid {
+        .related-products {
+          margin-top: 4rem;
+          padding-top: 3rem;
+          border-top: 2px solid var(--border-color);
+        }
+
+        .related-products .section-title {
+          text-align: center;
+          margin-bottom: 2.5rem;
+          font-size: 2rem;
+          color: var(--text-color);
+          font-weight: 600;
+        }
+
+        .related-products-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
           gap: 2rem;
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .related-product-card {
+          background: white;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          transition: all 0.3s ease;
+          text-decoration: none;
+          color: inherit;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        }
+
+        .related-product-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .related-product-image-wrapper {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 3/4;
+          overflow: hidden;
+          background: #f9fafb;
+        }
+
+        .related-product-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.3s ease;
+        }
+
+        .related-product-card:hover .related-product-image {
+          transform: scale(1.05);
+        }
+
+        .related-product-discount-badge {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          background: var(--error-color);
+          color: white;
+          padding: 4px 10px;
+          border-radius: 4px;
+          font-size: 0.75rem;
+          font-weight: 600;
+          z-index: 1;
+        }
+
+        .related-product-info {
+          padding: 1.25rem;
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+        }
+
+        .related-product-name {
+          font-size: 1rem;
+          font-weight: 600;
+          color: var(--text-color);
+          margin: 0 0 0.75rem 0;
+          line-height: 1.4;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          min-height: 2.8em;
+        }
+
+        .related-product-price {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          margin-top: auto;
+        }
+
+        .related-product-old-price {
+          text-decoration: line-through;
+          color: var(--text-light);
+          font-size: 0.9rem;
+        }
+
+        .related-product-current-price {
+          font-size: 1.25rem;
+          font-weight: 700;
+          color: var(--primary-color);
         }
 
         @media (max-width: 768px) {
@@ -563,20 +698,59 @@ const ProductDetail = () => {
             line-height: 1.7;
           }
 
-          .products-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            padding: 0 15px;
-          }
-
           .related-products {
-            padding: 2rem 0;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            padding: 0 15px;
           }
 
           .related-products .section-title {
             font-size: clamp(1.5rem, 5vw, 1.8rem);
             margin-bottom: 1.5rem;
-            padding: 0 15px;
+            padding: 0;
+          }
+
+          .related-products-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            padding: 0;
+          }
+
+          .related-product-card {
+            border-radius: 10px;
+          }
+
+          .related-product-image-wrapper {
+            aspect-ratio: 3/4;
+          }
+
+          .related-product-info {
+            padding: 1rem;
+          }
+
+          .related-product-name {
+            font-size: clamp(0.85rem, 3vw, 0.95rem);
+            min-height: 2.6em;
+            margin-bottom: 0.5rem;
+          }
+
+          .related-product-price {
+            gap: 0.5rem;
+          }
+
+          .related-product-old-price {
+            font-size: clamp(0.8rem, 2.5vw, 0.85rem);
+          }
+
+          .related-product-current-price {
+            font-size: clamp(1rem, 3.5vw, 1.15rem);
+          }
+
+          .related-product-discount-badge {
+            font-size: clamp(0.65rem, 2vw, 0.7rem);
+            padding: 3px 8px;
+            top: 8px;
+            right: 8px;
           }
         }
       `}</style>

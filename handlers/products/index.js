@@ -53,9 +53,11 @@ module.exports = async (req, res) => {
       const matchesOccasionType = occasionTypes.some(ot => ot.toLowerCase() === normalizedLower);
       
       if (matchesOccasionType) {
-        // Filter by occasion_type for these collections (case-insensitive using ILIKE)
-        whereConditions.push(`LOWER(occasion_type) = LOWER($${paramIndex})`);
-        params.push(normalizedCollection);
+        // Filter by occasion_type for these collections (case-insensitive)
+        // Use TRIM to handle any extra whitespace in database values
+        // Only match non-NULL values
+        whereConditions.push(`occasion_type IS NOT NULL AND TRIM(LOWER(occasion_type)) = LOWER($${paramIndex})`);
+        params.push(normalizedCollection.trim());
         paramIndex++;
       } else {
         // Check if collection matches categories (Silk, Banarasi, Designer, Bridal)
@@ -64,13 +66,13 @@ module.exports = async (req, res) => {
         const matchesCategory = categories.some(cat => cat.toLowerCase() === normalizedLower);
         if (matchesCategory) {
           // Filter by category for these collections (case-insensitive)
-          whereConditions.push(`LOWER(category) = LOWER($${paramIndex})`);
-          params.push(normalizedCollection);
+          whereConditions.push(`TRIM(LOWER(COALESCE(category, ''))) = LOWER($${paramIndex})`);
+          params.push(normalizedCollection.trim());
           paramIndex++;
         } else {
           // For other collections (like Celebrate), filter by collection_name (case-insensitive)
-          whereConditions.push(`LOWER(collection_name) = LOWER($${paramIndex})`);
-          params.push(normalizedCollection);
+          whereConditions.push(`TRIM(LOWER(COALESCE(collection_name, ''))) = LOWER($${paramIndex})`);
+          params.push(normalizedCollection.trim());
           paramIndex++;
         }
       }
