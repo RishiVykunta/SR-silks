@@ -56,8 +56,9 @@ module.exports = async (req, res) => {
         // Filter by occasion_type for these collections (case-insensitive)
         // Use TRIM to handle any extra whitespace in database values
         // Only match non-NULL values
-        whereConditions.push(`occasion_type IS NOT NULL AND TRIM(LOWER(occasion_type)) = LOWER($${paramIndex})`);
-        params.push(normalizedCollection.trim());
+        const trimmedValue = normalizedCollection.trim();
+        whereConditions.push(`occasion_type IS NOT NULL AND TRIM(LOWER(occasion_type)) = LOWER(TRIM($${paramIndex}))`);
+        params.push(trimmedValue);
         paramIndex++;
       } else {
         // Check if collection matches categories (Silk, Banarasi, Designer, Bridal)

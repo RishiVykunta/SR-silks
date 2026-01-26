@@ -265,6 +265,10 @@ const ProductForm = () => {
         price: parseFloat(formData.price),
         discount_price: formData.discount_price ? parseFloat(formData.discount_price) : null,
         stock: parseInt(formData.stock) || 0,
+        // Trim occasion_type to remove any extra whitespace
+        occasion_type: formData.occasion_type ? formData.occasion_type.trim() : null,
+        category: formData.category ? formData.category.trim() : null,
+        collection_name: formData.collection_name ? formData.collection_name.trim() : null,
         specifications: Object.keys(formData.specifications).length > 0 
           ? formData.specifications 
           : null

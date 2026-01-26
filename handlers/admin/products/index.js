@@ -65,10 +65,15 @@ module.exports = async (req, res) => {
         return { statusCode: 400, headers: corsHeaders(), body: JSON.stringify({ error: 'Name and price are required' }) };
       }
 
+      // Trim string fields to remove any extra whitespace
+      const trimmedOccasionType = occasion_type && typeof occasion_type === 'string' ? occasion_type.trim() || null : null;
+      const trimmedCategory = category && typeof category === 'string' ? category.trim() || null : null;
+      const trimmedCollectionName = collection_name && typeof collection_name === 'string' ? collection_name.trim() || null : null;
+
       const result = await query(
         `INSERT INTO products (name, description, price, discount_price, category, occasion_type, collection_name, images, size, color, material, features, specifications, shipping_info, stock, is_active, is_new_arrival, is_featured)
         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18) RETURNING *`,
-        [name, description || null, price, discount_price || null, category || null, occasion_type || null, collection_name || null, images || [], size || [], color || [], material || null, features || [], specifications ? JSON.stringify(specifications) : null, shipping_info || null, stock || 0, is_active !== undefined ? is_active : true, is_new_arrival || false, is_featured || false]
+        [name, description || null, price, discount_price || null, trimmedCategory, trimmedOccasionType, trimmedCollectionName, images || [], size || [], color || [], material || null, features || [], specifications ? JSON.stringify(specifications) : null, shipping_info || null, stock || 0, is_active !== undefined ? is_active : true, is_new_arrival || false, is_featured || false]
       );
 
       return {
