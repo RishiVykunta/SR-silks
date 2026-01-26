@@ -43,19 +43,21 @@ module.exports = async (req, res) => {
       // Normalize collection name: convert hyphens to spaces (e.g., "Special-Occasions" -> "Special Occasions")
       const normalizedCollection = collection.replace(/-/g, ' ');
       
-      // Check if collection matches categories (Silk, Banarasi, Designer, Bridal, Party)
-      const categories = ['Silk', 'Banarasi', 'Designer', 'Bridal', 'Party'];
-      if (categories.includes(normalizedCollection)) {
-        // Filter by category for these collections
-        whereConditions.push(`category = $${paramIndex}`);
+      // Check if collection matches occasion types FIRST (Formal, Party, Casual, Traditional, Special Occasions)
+      // These should be filtered by occasion_type field
+      const occasionTypes = ['Formal', 'Party', 'Casual', 'Traditional', 'Special Occasions'];
+      if (occasionTypes.includes(normalizedCollection)) {
+        // Filter by occasion_type for these collections
+        whereConditions.push(`occasion_type = $${paramIndex}`);
         params.push(normalizedCollection);
         paramIndex++;
       } else {
-        // Check if collection matches occasion types (Formal, Party, Casual, Traditional, Special Occasions)
-        const occasionTypes = ['Formal', 'Party', 'Casual', 'Traditional', 'Special Occasions'];
-        if (occasionTypes.includes(normalizedCollection)) {
-          // Filter by occasion_type for these collections
-          whereConditions.push(`occasion_type = $${paramIndex}`);
+        // Check if collection matches categories (Silk, Banarasi, Designer, Bridal)
+        // Note: Party is NOT in categories - it's an occasion type
+        const categories = ['Silk', 'Banarasi', 'Designer', 'Bridal'];
+        if (categories.includes(normalizedCollection)) {
+          // Filter by category for these collections
+          whereConditions.push(`category = $${paramIndex}`);
           params.push(normalizedCollection);
           paramIndex++;
         } else {

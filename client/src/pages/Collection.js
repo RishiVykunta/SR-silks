@@ -44,9 +44,16 @@ const Collection = () => {
 
   if (loading) return <div className="loading">Loading collection...</div>;
 
+  // Format collection name for display (convert hyphens to spaces and capitalize)
+  const displayName = collectionName 
+    ? collectionName.replace(/-/g, ' ').split(' ').map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+      ).join(' ')
+    : 'Collection';
+
   return (
     <div className="container" style={{ padding: '2rem 0' }}>
-      <h1>{collectionName} Collection</h1>
+      <h1>{displayName} Collection</h1>
 
       {collectionName === 'Celebrate' && (
         <div className="price-filters" style={{ margin: '2rem 0', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
