@@ -112,6 +112,34 @@ const ProductForm = () => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
 
+    // Validate file size (4MB max per file)
+    const maxSize = 4 * 1024 * 1024; // 4MB
+    const invalidFiles = files.filter(file => file.size > maxSize);
+    
+    if (invalidFiles.length > 0) {
+      alert(`Some files exceed the 4MB size limit:\n${invalidFiles.map(f => f.name).join('\n')}\n\nPlease select smaller files.`);
+      e.target.value = ''; // Reset file input
+      return;
+    }
+
+    // Validate total size (10MB max total)
+    const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+    const maxTotalSize = 10 * 1024 * 1024; // 10MB
+    if (totalSize > maxTotalSize) {
+      alert(`Total file size (${(totalSize / 1024 / 1024).toFixed(2)}MB) exceeds 10MB limit. Please select fewer or smaller files.`);
+      e.target.value = ''; // Reset file input
+      return;
+    }
+
+    // Validate file types
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    const invalidTypes = files.filter(file => !allowedTypes.includes(file.type));
+    if (invalidTypes.length > 0) {
+      alert(`Invalid file types. Please select only JPEG, PNG, or WebP images:\n${invalidTypes.map(f => f.name).join('\n')}`);
+      e.target.value = ''; // Reset file input
+      return;
+    }
+
     try {
       setUploading(true);
       const formData = new FormData();
@@ -119,15 +147,36 @@ const ProductForm = () => {
         formData.append('images', file);
       });
 
-      const response = await api.post('/upload/images', formData);
+      const response = await api.post('/upload/images', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        timeout: 60000 // 60 second timeout for large uploads
+      });
 
       setFormData(prev => ({
         ...prev,
         images: [...prev.images, ...response.data.images.map(img => img.url)]
       }));
+      
+      // Reset file input after successful upload
+      e.target.value = '';
+      
+      alert(`Successfully uploaded ${response.data.images.length} image(s)`);
     } catch (error) {
       console.error('Error uploading images:', error);
-      alert('Failed to upload images');
+      const errorMessage = error.response?.data?.error || error.message || 'Failed to upload images';
+      
+      if (error.response?.status === 413) {
+        alert(`File size too large: ${errorMessage}\n\nPlease select smaller files (max 4MB per file, 10MB total).`);
+      } else if (error.response?.status === 500) {
+        alert(`Server error: ${errorMessage}\n\nPlease try again or contact support.`);
+      } else {
+        alert(`Upload failed: ${errorMessage}`);
+      }
+      
+      // Reset file input on error
+      e.target.value = '';
     } finally {
       setUploading(false);
     }
@@ -438,15 +487,32 @@ const ProductForm = () => {
             <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>
               Or Upload Images
             </label>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImageUpload}
-              disabled={uploading}
-              style={{ marginBottom: '0.5rem' }}
-            />
-            {uploading && <p>Uploading images...</p>}
+            <div style={{ marginBottom: '0.5rem' }}>
+              <input
+                type="file"
+                accept="image/jpeg,image/jpg,image/png,image/webp"
+                multiple
+                onChange={handleImageUpload}
+                disabled={uploading}
+                id="image-upload-input"
+                style={{ 
+                  marginBottom: '0.5rem',
+                  padding: '0.5rem',
+                  width: '100%',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '4px',
+                  cursor: uploading ? 'not-allowed' : 'pointer'
+                }}
+              />
+              <p style={{ fontSize: '0.875rem', color: '#666', marginTop: '0.25rem' }}>
+                Max 4MB per file, 10MB total. Supported formats: JPEG, PNG, WebP
+              </p>
+            </div>
+            {uploading && (
+              <div style={{ padding: '0.75rem', background: '#f0f9ff', borderRadius: '4px', color: '#0369a1' }}>
+                <p style={{ margin: 0 }}>⏳ Uploading images... Please wait.</p>
+              </div>
+            )}
           </div>
 
           {/* Image Carousel Preview */}
