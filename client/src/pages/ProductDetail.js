@@ -47,8 +47,25 @@ const ProductDetail = () => {
 
   const sizeText = selectedSize ? `Size: ${selectedSize}` : '';
   const colorText = selectedColor ? `Color: ${selectedColor}` : '';
-  const details = [sizeText, colorText].filter(Boolean).join(', ');
-  const whatsappMessage = `Hello! I'm interested in ${product.name}${details ? ` (${details})` : ''} - ₹${finalPrice}`;
+  const sizeColorText = [sizeText, colorText].filter(Boolean).join(', ');
+  const productImageUrl = product.images?.[0] || product.images?.[selectedImage] || '';
+  const productUrl = `${window.location.origin}/product/${product.id}`;
+  
+  // Enhanced WhatsApp message with product details and image URL
+  const whatsappMessage = `Hello! 👋
+
+I would like to buy this saree:
+
+*Product Name:* ${product.name}
+${sizeColorText ? `*${sizeColorText}*\n` : ''}*Price:* ₹${parseFloat(finalPrice).toFixed(2)}
+${product.discount_price ? `*Original Price:* ₹${parseFloat(product.price).toFixed(2)}\n*Discount:* ${discountPercentage}% OFF\n` : ''}
+*Product Image:* ${productImageUrl}
+*View Product:* ${productUrl}
+
+I would like to customize/purchase this saree. Please let me know the availability and customization options.
+
+Thank you! 😊`;
+
   const whatsappUrl = `https://wa.me/91${BRAND_INFO.contact.whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
