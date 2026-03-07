@@ -113,11 +113,7 @@ CREATE TABLE IF NOT EXISTS order_items (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Step 2: Create Admin Account
--- This bcrypt hash is for password: admin123
--- Generated with: bcrypt.hash('admin123', 10)
 
--- Delete existing admin if any (to ensure clean setup)
 DELETE FROM admins WHERE email = 'srsilks@gmail.com' OR email = 'admin@shantisilkhouse.com';
 
 -- Insert the admin account with properly hashed password
@@ -133,8 +129,3 @@ SET password = EXCLUDED.password, name = EXCLUDED.name;
 -- Verify the admin was created
 SELECT id, email, name, created_at FROM admins WHERE email = 'srsilks@gmail.com';
 
--- ============================================
--- ADMIN LOGIN CREDENTIALS:
--- Email: srsilks@gmail.com
--- Password: admin123
--- ============================================
