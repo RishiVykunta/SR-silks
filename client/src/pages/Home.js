@@ -40,8 +40,9 @@ const Home = () => {
       
       // Load hero images first (independent of API calls)
       const heroImages = [
-        'https://res.cloudinary.com/dbaiaiwkk/image/upload/v1761847331/WhatsApp_Image_2025-10-30_at_23.18.07_aef543c9_nmetje.jpg',
-        'https://cliosilks.com/cdn/shop/files/Untitled-1-2.jpg?v=1739348317&width=2400'
+        'https://res.cloudinary.com/dqcxekzxn/image/upload/v1772901098/sr3_mpvqdu.jpg',
+        'https://res.cloudinary.com/dqcxekzxn/image/upload/v1772901093/sr2_ntjlcn.jpg',
+        'https://res.cloudinary.com/dqcxekzxn/image/upload/v1772901490/sr4_vqtrsg.jpg'
       ];
       
       // Preload all hero images
