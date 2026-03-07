@@ -128,4 +128,3 @@ SET password = EXCLUDED.password, name = EXCLUDED.name;
 
 -- Verify the admin was created
 SELECT id, email, name, created_at FROM admins WHERE email = 'srsilks@gmail.com';
-
