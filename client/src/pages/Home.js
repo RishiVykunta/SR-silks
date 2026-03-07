@@ -371,7 +371,8 @@ const Home = () => {
           width: 100%;
           height: 724px;
           object-fit: cover;
-          object-position: center top;
+          object-position: top center;
+          transform-origin: top center;
           position: absolute;
           top: 0;
           left: 0;
