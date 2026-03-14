@@ -50,6 +50,9 @@ async function initDbHandler(req, res) {
         first_name VARCHAR(100),
         last_name VARCHAR(100),
         phone VARCHAR(20),
+        is_verified BOOLEAN DEFAULT FALSE,
+        verification_code VARCHAR(10),
+        google_id VARCHAR(255),
         reset_token VARCHAR(255),
         reset_token_expiry TIMESTAMP,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -72,6 +75,24 @@ async function initDbHandler(req, res) {
           WHERE table_name='users' AND column_name='reset_token_expiry'
         ) THEN
           ALTER TABLE users ADD COLUMN reset_token_expiry TIMESTAMP;
+        END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns 
+          WHERE table_name='users' AND column_name='is_verified'
+        ) THEN
+          ALTER TABLE users ADD COLUMN is_verified BOOLEAN DEFAULT FALSE;
+        END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns 
+          WHERE table_name='users' AND column_name='verification_code'
+        ) THEN
+          ALTER TABLE users ADD COLUMN verification_code VARCHAR(10);
+        END IF;
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns 
+          WHERE table_name='users' AND column_name='google_id'
+        ) THEN
+          ALTER TABLE users ADD COLUMN google_id VARCHAR(255);
         END IF;
       END $$;
     `);

@@ -9,6 +9,11 @@ CREATE TABLE IF NOT EXISTS users (
   first_name VARCHAR(100),
   last_name VARCHAR(100),
   phone VARCHAR(20),
+  is_verified BOOLEAN DEFAULT FALSE,
+  verification_code VARCHAR(10),
+  google_id VARCHAR(255),
+  reset_token VARCHAR(255),
+  reset_token_expiry TIMESTAMP,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -14,8 +14,47 @@ const Register = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { register } = useAuth();
+  const { register, googleLogin } = useAuth();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    /* global google */
+    const handleGoogleResponse = async (response) => {
+      setLoading(true);
+      const result = await googleLogin(response.credential);
+      if (result.success) {
+        navigate('/');
+      } else {
+        setError(result.error || 'Google registration failed');
+      }
+      setLoading(false);
+    };
+
+    const initializeGoogle = () => {
+      if (window.google) {
+        google.accounts.id.initialize({
+          client_id: "YOUR_GOOGLE_CLIENT_ID", // This should be from config
+          callback: handleGoogleResponse
+        });
+        google.accounts.id.renderButton(
+          document.getElementById("googleBtn"),
+          { theme: "outline", size: "large", width: "100%" }
+        );
+      }
+    };
+
+    if (!document.getElementById('google-jssdk')) {
+      const script = document.createElement('script');
+      script.id = 'google-jssdk';
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = initializeGoogle;
+      document.head.appendChild(script);
+    } else {
+      initializeGoogle();
+    }
+  }, [googleLogin, navigate]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -47,7 +86,11 @@ const Register = () => {
       });
 
       if (result.success) {
-        navigate('/');
+        if (result.requiresVerification) {
+          navigate('/verify-otp', { state: { email: formData.email } });
+        } else {
+          navigate('/');
+        }
       } else {
         setError(result.error || 'Registration failed');
       }
@@ -61,97 +104,106 @@ const Register = () => {
   return (
     <div className="auth-page container" style={{ padding: '4rem 0', maxWidth: '500px', margin: '0 auto' }}>
       <h1>Create Account</h1>
-      <form onSubmit={handleSubmit} className="auth-form">
+      <div className="auth-form">
         {error && <div className="error">{error}</div>}
         
-        <div className="form-row">
-          <div className="form-group">
-            <label>First Name</label>
-            <input
-              type="text"
-              name="first_name"
-              value={formData.first_name}
-              onChange={handleChange}
-              placeholder="First name"
-            />
+        <form onSubmit={handleSubmit}>
+          <div className="form-row">
+            <div className="form-group">
+              <label>First Name</label>
+              <input
+                type="text"
+                name="first_name"
+                value={formData.first_name}
+                onChange={handleChange}
+                placeholder="First name"
+              />
+            </div>
+            <div className="form-group">
+              <label>Last Name</label>
+              <input
+                type="text"
+                name="last_name"
+                value={formData.last_name}
+                onChange={handleChange}
+                placeholder="Last name"
+              />
+            </div>
           </div>
+
           <div className="form-group">
-            <label>Last Name</label>
+            <label>Email *</label>
             <input
-              type="text"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleChange}
-              placeholder="Last name"
-            />
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label>Email *</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            placeholder="Enter your email"
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Phone</label>
-          <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            placeholder="Phone number"
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Password *</label>
-          <div className="password-input">
-            <input
-              type={showPassword ? 'text' : 'password'}
-              name="password"
-              value={formData.password}
+              type="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               required
-              minLength="6"
-              placeholder="At least 6 characters"
+              placeholder="Enter your email"
             />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="password-toggle"
-            >
-              {showPassword ? '👁️' : '👁️‍🗨️'}
-            </button>
           </div>
+
+          <div className="form-group">
+            <label>Phone</label>
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="Phone number"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Password *</label>
+            <div className="password-input">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                minLength="6"
+                placeholder="At least 6 characters"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="password-toggle"
+              >
+                {showPassword ? '👁️' : '👁️‍🗨️'}
+              </button>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Confirm Password *</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+              placeholder="Confirm password"
+            />
+          </div>
+
+          <button type="submit" className="btn btn-primary full-width" disabled={loading}>
+            {loading ? 'Creating Account...' : 'Register'}
+          </button>
+        </form>
+
+        <div style={{ margin: '1.5rem 0', textAlign: 'center', position: 'relative' }}>
+          <hr style={{ border: '0', borderTop: '1px solid #eee' }} />
+          <span style={{ position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', background: 'white', padding: '0 10px', color: '#666', fontSize: '14px' }}>OR</span>
         </div>
 
-        <div className="form-group">
-          <label>Confirm Password *</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            required
-            placeholder="Confirm password"
-          />
-        </div>
-
-        <button type="submit" className="btn btn-primary full-width" disabled={loading}>
-          {loading ? 'Creating Account...' : 'Register'}
-        </button>
+        <div id="googleBtn" style={{ marginBottom: '1rem' }}></div>
 
         <div className="auth-links">
           <span>Already have an account? <Link to="/login">Login</Link></span>
         </div>
-      </form>
+      </div>
 
       <style>{`
         .auth-form {

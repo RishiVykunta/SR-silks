@@ -49,7 +49,11 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await api.post('/auth/login', { email, password });
-      const { token, user } = response.data;
+      const { token, user, requiresVerification } = response.data;
+
+      if (requiresVerification) {
+        return { success: false, requiresVerification: true, email };
+      }
 
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
@@ -57,6 +61,13 @@ export const AuthProvider = ({ children }) => {
 
       return { success: true, user };
     } catch (error) {
+      if (error.response?.data?.requiresVerification) {
+        return { 
+          success: false, 
+          requiresVerification: true, 
+          email: error.response.data.email 
+        };
+      }
       return {
         success: false,
         error: error.response?.data?.error || 'Login failed'
@@ -67,6 +78,30 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       const response = await api.post('/auth/register', userData);
+      const { requiresVerification, email } = response.data;
+
+      if (requiresVerification) {
+        return { success: true, requiresVerification: true, email };
+      }
+
+      // Fallback for old behavior (though backend is updated)
+      const { token, user } = response.data;
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
+
+      return { success: true, user };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.error || 'Registration failed'
+      };
+    }
+  };
+
+  const verifyOTP = async (email, code) => {
+    try {
+      const response = await api.post('/auth/verify-otp', { email, code });
       const { token, user } = response.data;
 
       localStorage.setItem('token', token);
@@ -77,7 +112,37 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       return {
         success: false,
-        error: error.response?.data?.error || 'Registration failed'
+        error: error.response?.data?.error || 'Verification failed'
+      };
+    }
+  };
+
+  const resendOTP = async (email) => {
+    try {
+      await api.post('/auth/resend-otp', { email });
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.error || 'Failed to resend code'
+      };
+    }
+  };
+
+  const googleLogin = async (idToken) => {
+    try {
+      const response = await api.post('/auth/google', { idToken });
+      const { token, user } = response.data;
+
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
+
+      return { success: true, user };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.error || 'Google login failed'
       };
     }
   };
@@ -118,6 +183,9 @@ export const AuthProvider = ({ children }) => {
     loading,
     login,
     register,
+    verifyOTP,
+    resendOTP,
+    googleLogin,
     adminLogin,
     logout,
     adminLogout,

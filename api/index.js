@@ -81,6 +81,12 @@ module.exports = async (req, res) => {
           handler = require('../handlers/auth/forgot-password');
         } else if (routeKey === 'reset-password' || routeKey === 'reset_password') {
           handler = require('../handlers/auth/reset-password');
+        } else if (routeKey === 'google') {
+          handler = require('../handlers/auth/google');
+        } else if (routeKey === 'verify-otp') {
+          handler = require('../handlers/auth/verify-otp');
+        } else if (routeKey === 'resend-otp') {
+          handler = require('../handlers/auth/resend-otp');
         } else {
           return notFound(req, res);
         }

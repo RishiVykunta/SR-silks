@@ -7,8 +7,47 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { login, adminLogin } = useAuth();
+  const { login, adminLogin, googleLogin } = useAuth();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    /* global google */
+    const handleGoogleResponse = async (response) => {
+      setLoading(true);
+      const result = await googleLogin(response.credential);
+      if (result.success) {
+        navigate('/');
+      } else {
+        setError(result.error || 'Google login failed');
+      }
+      setLoading(false);
+    };
+
+    const initializeGoogle = () => {
+      if (window.google) {
+        google.accounts.id.initialize({
+          client_id: "YOUR_GOOGLE_CLIENT_ID", // This should be from config
+          callback: handleGoogleResponse
+        });
+        google.accounts.id.renderButton(
+          document.getElementById("googleBtn"),
+          { theme: "outline", size: "large", width: "100%" }
+        );
+      }
+    };
+
+    if (!document.getElementById('google-jssdk')) {
+      const script = document.createElement('script');
+      script.id = 'google-jssdk';
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = initializeGoogle;
+      document.head.appendChild(script);
+    } else {
+      initializeGoogle();
+    }
+  }, [googleLogin, navigate]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -33,6 +72,8 @@ const Login = () => {
         } else {
           navigate('/');
         }
+      } else if (result.requiresVerification) {
+        navigate('/verify-otp', { state: { email: result.email } });
       } else {
         setError(result.error || 'Login failed');
       }
@@ -46,63 +87,72 @@ const Login = () => {
   return (
     <div className="auth-page container" style={{ padding: '4rem 0', maxWidth: '500px', margin: '0 auto' }}>
       <h1>Login</h1>
-      <form onSubmit={handleSubmit} className="auth-form">
+      <div className="auth-form">
         {error && <div className="error">{error}</div>}
         
-        <div className="form-group">
-          <label>Email *</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            placeholder="Enter your email"
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Password *</label>
-          <div className="password-input">
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Email *</label>
             <input
-              type={showPassword ? 'text' : 'password'}
-              name="password"
-              value={formData.password}
+              type="email"
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               required
-              placeholder="Enter your password"
+              placeholder="Enter your email"
             />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="password-toggle"
-            >
-              {showPassword ? '👁️' : '👁️‍🗨️'}
-            </button>
           </div>
+
+          <div className="form-group">
+            <label>Password *</label>
+            <div className="password-input">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                placeholder="Enter your password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="password-toggle"
+              >
+                {showPassword ? '👁️' : '👁️‍🗨️'}
+              </button>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>
+              <input
+                type="checkbox"
+                name="remember"
+                checked={formData.remember}
+                onChange={handleChange}
+              />
+              Remember me
+            </label>
+          </div>
+
+          <button type="submit" className="btn btn-primary full-width" disabled={loading}>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+        </form>
+
+        <div style={{ margin: '1.5rem 0', textAlign: 'center', position: 'relative' }}>
+          <hr style={{ border: '0', borderTop: '1px solid #eee' }} />
+          <span style={{ position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', background: 'white', padding: '0 10px', color: '#666', fontSize: '14px' }}>OR</span>
         </div>
 
-        <div className="form-group">
-          <label>
-            <input
-              type="checkbox"
-              name="remember"
-              checked={formData.remember}
-              onChange={handleChange}
-            />
-            Remember me
-          </label>
-        </div>
-
-        <button type="submit" className="btn btn-primary full-width" disabled={loading}>
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
+        <div id="googleBtn" style={{ marginBottom: '1rem' }}></div>
 
         <div className="auth-links">
           <Link to="/forgot-password">Forgot Password?</Link>
           <span>Don't have an account? <Link to="/register">Register</Link></span>
         </div>
-      </form>
+      </div>
 
       <style>{`
         .auth-form {
