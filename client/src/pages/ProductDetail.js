@@ -48,7 +48,6 @@ const ProductDetail = () => {
   const sizeText = selectedSize ? `Size: ${selectedSize}` : '';
   const colorText = selectedColor ? `Color: ${selectedColor}` : '';
   const sizeColorText = [sizeText, colorText].filter(Boolean).join(', ');
-  const productImageUrl = product.images?.[0] || product.images?.[selectedImage] || '';
   const productUrl = `${window.location.origin}/product/${product.id}`;
   
   // Enhanced WhatsApp message with product details and image URL
