@@ -112,9 +112,9 @@ const Collection = () => {
             .product-card > a {
               display: block !important;
               width: 100% !important;
-              aspect-ratio: 3/4 !important;
+              aspect-ratio: 4/5 !important;
               overflow: hidden !important;
-              border-radius: 12px 12px 0 0 !important; /* Round only top corners */
+              border-radius: 10px 10px 0 0 !important;
             }
 
             .product-card img {
@@ -122,65 +122,65 @@ const Collection = () => {
               height: 100% !important;
               object-fit: cover !important;
               display: block !important;
-              border-radius: 0 !important; /* Reset any inherited radius */
+              border-radius: 0 !important;
             }
 
             .product-card > div {
-              padding: 1rem !important;
+              padding: 0.75rem !important;
               display: flex;
               flex-direction: column;
-              gap: 0.5rem;
+              gap: 0.25rem;
             }
 
             .product-card h3 {
-              font-family: 'Playfair Display', serif !important;
-              font-size: 1.1rem !important;
-              font-weight: 600 !important;
-              line-height: 1.4 !important;
-              margin-bottom: 0.5rem !important;
-              min-height: auto !important;
-              color: var(--dark-color) !important;
+              font-size: 0.91rem !important;
+              font-weight: 500 !important;
+              line-height: 1.3 !important;
+              margin-bottom: 0.4rem !important;
+              min-height: 2.6em !important;
+              color: #333 !important;
+              font-family: inherit !important;
             }
 
             .product-card h3 a {
-              font-family: 'Playfair Display', serif !important;
-              font-size: 1.1rem !important;
-              color: var(--dark-color) !important;
+              font-size: 0.91rem !important;
+              color: #333 !important;
+              font-family: inherit !important;
             }
 
             .product-card > div > div:first-of-type {
-              margin: 0.5rem 0 !important;
+              margin-bottom: 0.6rem !important;
               display: flex;
               align-items: center;
-              gap: 0.5rem !important;
+              gap: 0.4rem !important;
             }
 
             .product-card > div > div:first-of-type span:first-child {
-              font-size: 0.85rem !important;
+              font-size: 0.8rem !important;
+              color: var(--text-light);
             }
 
             .product-card > div > div:first-of-type span:last-child {
-              font-size: 1.25rem !important;
+              font-size: 1.05rem !important;
               font-weight: 700 !important;
-              color: #B8860B !important; 
+              color: var(--primary-color) !important; 
             }
 
             .product-card > div > div:last-of-type {
-              gap: 0.8rem !important;
-              margin-top: 0.5rem;
+              gap: 0.5rem !important;
+              margin-top: auto;
               display: flex !important;
               flex-direction: row !important;
               align-items: center !important;
             }
 
-            /* Specific button selectors to avoid affecting the product link */
             .product-card button,
             .product-card div > a {
-              width: 44px !important;
-              height: 44px !important;
-              min-width: 44px !important;
-              min-height: 44px !important;
-              font-size: 20px !important;
+              width: 34px !important;
+              height: 34px !important;
+              min-width: 34px !important;
+              min-height: 34px !important;
+              font-size: 16px !important;
               border-radius: 50% !important;
               display: flex !important;
               align-items: center !important;
@@ -191,15 +191,15 @@ const Collection = () => {
 
             .product-card button svg,
             .product-card div > a svg {
-              width: 20px !important;
-              height: 20px !important;
+              width: 16px !important;
+              height: 16px !important;
             }
 
             h1 {
-              font-size: 1.8rem !important;
+              font-size: 1.6rem !important;
               padding: 0 12px !important;
               text-align: left !important;
-              margin-bottom: 1.5rem !important;
+              margin-bottom: 1.2rem !important;
               font-family: 'Playfair Display', serif !important;
               font-weight: 700 !important;
             }
@@ -207,18 +207,18 @@ const Collection = () => {
             .price-filters {
               flex-direction: row !important;
               flex-wrap: wrap;
-              gap: 0.6rem !important;
-              margin: 1.5rem 0 !important;
+              gap: 0.5rem !important;
+              margin: 1.2rem 0 !important;
               padding: 0 12px !important;
               justify-content: flex-start !important;
             }
 
             .price-filters .btn {
               width: auto !important;
-              min-width: calc(50% - 0.3rem) !important;
-              min-height: 42px !important;
-              padding: 8px 15px !important;
-              font-size: 14px !important;
+              min-width: calc(50% - 0.25rem) !important;
+              min-height: 40px !important;
+              padding: 6px 12px !important;
+              font-size: 13px !important;
               border-radius: 8px !important;
             }
           }
