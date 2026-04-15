@@ -273,7 +273,7 @@ const Products = () => {
 
           .products-grid {
             grid-template-columns: repeat(2, 1fr) !important;
-            gap: 10px !important;
+            gap: 1.5rem !important;
             padding: 0 !important;
           }
 
@@ -305,7 +305,7 @@ const Products = () => {
           }
 
           .product-image-link {
-            aspect-ratio: 4/5;
+            aspect-ratio: 3/4;
             max-width: 100%;
             overflow: hidden;
           }
@@ -318,27 +318,26 @@ const Products = () => {
           }
 
           .product-info {
-            padding: 0.75rem;
+            padding: 1rem;
           }
 
           .product-info h3 {
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-            line-height: 1.3;
-            min-height: 2.6em;
+            font-size: clamp(0.9rem, 3.5vw, 1rem);
+            margin-bottom: 0.6rem;
+            line-height: 1.4;
           }
 
           .product-price {
-            margin-bottom: 0.75rem;
-            gap: 0.5rem;
+            margin-bottom: 1rem;
+            gap: 0.6rem;
           }
 
           .old-price {
-            font-size: 0.8rem;
+            font-size: clamp(0.85rem, 3vw, 0.95rem);
           }
 
           .current-price {
-            font-size: 1rem;
+            font-size: clamp(1.1rem, 4vw, 1.3rem);
           }
 
           .product-actions {
@@ -346,30 +345,30 @@ const Products = () => {
           }
 
           .wishlist-btn-action {
-            width: 34px;
-            height: 34px;
-            min-width: 34px;
-            min-height: 34px;
-            font-size: 16px;
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            min-height: 38px;
+            font-size: 20px;
           }
 
           .whatsapp-btn {
-            width: 34px;
-            height: 34px;
-            min-width: 34px;
-            min-height: 34px;
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            min-height: 38px;
           }
 
           .whatsapp-btn svg {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
           }
 
           .discount-badge {
-            top: 8px;
-            right: 8px;
-            padding: 4px 8px;
-            font-size: 10px;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            font-size: clamp(10px, 2.5vw, 12px);
           }
         }
       `}</style>
