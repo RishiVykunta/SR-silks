@@ -1262,7 +1262,7 @@ const ProductCard = ({ product, onToggleWishlist, isInWishlist }) => {
     ? Math.round(((price - discountPrice) / price) * 100)
     : 0;
 
-  const whatsappMessage = `Hello! I'm interested in ${product.name} - ₹${finalPrice.toFixed(2)}`;
+  const whatsappMessage = `Hi SR Silks! 👋 I'm interested in the "${product.name}" (₹${finalPrice.toFixed(2)}). Can you please provide more details or availability? \n\nProduct Link: ${window.location.origin}/product/${product.id}`;
   const whatsappUrl = `https://wa.me/91${BRAND_INFO.contact.whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
 
   // Auto-slide images every 2 seconds

@@ -52,17 +52,14 @@ const ProductDetail = () => {
   const productUrl = `${window.location.origin}/product/${product.id}`;
   
   // Enhanced WhatsApp message with product details and image URL
-  const whatsappMessage = `Hello! 👋
-
-I would like to buy this saree:
+  const whatsappMessage = `Hi SR Silks! 👋 I fell in love with this beautiful saree and I'm interested in buying it.
 
 *Product Name:* ${product.name}
-${sizeColorText ? `*${sizeColorText}*\n` : ''}*Price:* ₹${parseFloat(finalPrice).toFixed(2)}
+${sizeColorText ? `*Selection:* ${sizeColorText}\n` : ''}*Price:* ₹${parseFloat(finalPrice).toFixed(2)}
 ${product.discount_price ? `*Original Price:* ₹${parseFloat(product.price).toFixed(2)}\n*Discount:* ${discountPercentage}% OFF\n` : ''}
-*Product Image:* ${productImageUrl}
-*View Product:* ${productUrl}
+*Product Link:* ${productUrl}
 
-I would like to customize/purchase this saree. Please let me know the availability and customization options.
+Could you please help me with the purchase or any customization options available?
 
 Thank you! 😊`;
 

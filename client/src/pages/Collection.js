@@ -269,7 +269,7 @@ const Collection = () => {
                     {isInWishlist(product.id) ? '❤️' : '🤍'}
                   </button>
                   <a
-                    href={`https://wa.me/91${BRAND_INFO.contact.whatsapp}?text=${encodeURIComponent(`Hello! I'm interested in ${product.name} - ₹${parseFloat(product.discount_price || product.price || 0).toFixed(2)}`)}`}
+                    href={`https://wa.me/91${BRAND_INFO.contact.whatsapp}?text=${encodeURIComponent(`Hi SR Silks! 👋 I'm interested in the "${product.name}" (₹${parseFloat(product.discount_price || product.price || 0).toFixed(2)}). Can you please provide more details or availability? \n\nProduct Link: ${window.location.origin}/product/${product.id}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
