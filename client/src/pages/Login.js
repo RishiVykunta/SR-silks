@@ -10,44 +10,7 @@ const Login = () => {
   const { login, adminLogin, googleLogin } = useAuth();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
-    /* global google */
-    const handleGoogleResponse = async (response) => {
-      setLoading(true);
-      const result = await googleLogin(response.credential);
-      if (result.success) {
-        navigate('/');
-      } else {
-        setError(result.error || 'Google login failed');
-      }
-      setLoading(false);
-    };
 
-    const initializeGoogle = () => {
-      if (window.google) {
-        google.accounts.id.initialize({
-          client_id: "YOUR_GOOGLE_CLIENT_ID", // This should be from config
-          callback: handleGoogleResponse
-        });
-        google.accounts.id.renderButton(
-          document.getElementById("googleBtn"),
-          { theme: "outline", size: "large", width: "100%" }
-        );
-      }
-    };
-
-    if (!document.getElementById('google-jssdk')) {
-      const script = document.createElement('script');
-      script.id = 'google-jssdk';
-      script.src = 'https://accounts.google.com/gsi/client';
-      script.async = true;
-      script.defer = true;
-      script.onload = initializeGoogle;
-      document.head.appendChild(script);
-    } else {
-      initializeGoogle();
-    }
-  }, [googleLogin, navigate]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -141,12 +104,7 @@ const Login = () => {
           </button>
         </form>
 
-        <div style={{ margin: '1.5rem 0', textAlign: 'center', position: 'relative' }}>
-          <hr style={{ border: '0', borderTop: '1px solid #eee' }} />
-          <span style={{ position: 'absolute', top: '-10px', left: '50%', transform: 'translateX(-50%)', background: 'white', padding: '0 10px', color: '#666', fontSize: '14px' }}>OR</span>
-        </div>
 
-        <div id="googleBtn" style={{ marginBottom: '1rem' }}></div>
 
         <div className="auth-links">
           <Link to="/forgot-password">Forgot Password?</Link>
