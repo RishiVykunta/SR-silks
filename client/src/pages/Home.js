@@ -1043,23 +1043,23 @@ const Home = () => {
           }
 
           .price-filter-btn {
-            padding: 0.65rem 1.2rem;
-            font-size: clamp(0.75rem, 3vw, 0.9rem);
-            min-height: 44px;
+            padding: 0.65rem 1rem;
+            font-size: 0.8rem;
+            min-height: 40px;
             flex: 1;
-            min-width: calc(50% - 0.375rem);
-            max-width: calc(50% - 0.375rem);
+            min-width: calc(50% - 0.5rem);
+            max-width: calc(50% - 0.5rem);
           }
 
           .category-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            padding: 0 15px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem 0.75rem;
+            padding: 0 10px;
           }
 
           .category-image {
-            width: 120px;
-            height: 120px;
+            width: 90px;
+            height: 90px;
             max-width: 100%;
             border-radius: 50%;
             overflow: hidden;
@@ -1078,14 +1078,15 @@ const Home = () => {
           }
 
           .category-card h3 {
-            font-size: clamp(0.8rem, 3vw, 0.9rem);
-            margin-top: 0.75rem;
+            font-size: 0.75rem;
+            margin-top: 0.6rem;
+            letter-spacing: 0.5px;
           }
 
           .products-grid {
             grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            padding: 1rem 15px;
+            gap: 10px;
+            padding: 1rem 10px;
           }
           
           .product-card {
@@ -1522,7 +1523,7 @@ const ProductCard = ({ product, onToggleWishlist, isInWishlist }) => {
           }
 
           .product-image-link {
-            aspect-ratio: 3/4;
+            aspect-ratio: 4/5;
             max-width: 100%;
             overflow: hidden;
           }
@@ -1535,27 +1536,27 @@ const ProductCard = ({ product, onToggleWishlist, isInWishlist }) => {
           }
 
           .product-info {
-            padding: 1rem;
+            padding: 0.75rem;
           }
 
           .product-info h3 {
-            font-size: clamp(0.9rem, 3.5vw, 1rem);
-            min-height: auto;
-            margin-bottom: 0.6rem;
-            line-height: 1.4;
+            font-size: 0.9rem;
+            min-height: 2.6em;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
           }
 
           .product-price {
-            margin-bottom: 1rem;
-            gap: 0.6rem;
+            margin-bottom: 0.75rem;
+            gap: 0.5rem;
           }
 
           .old-price {
-            font-size: clamp(0.85rem, 3vw, 0.95rem);
+            font-size: 0.8rem;
           }
 
           .current-price {
-            font-size: clamp(1.1rem, 4vw, 1.3rem);
+            font-size: 1rem;
           }
 
           .product-actions {
@@ -1564,30 +1565,30 @@ const ProductCard = ({ product, onToggleWishlist, isInWishlist }) => {
           }
 
           .wishlist-btn-action {
-            width: 38px;
-            height: 38px;
-            min-width: 38px;
-            min-height: 38px;
-            font-size: 20px;
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
+            min-height: 34px;
+            font-size: 16px;
           }
 
           .whatsapp-btn {
-            width: 38px;
-            height: 38px;
-            min-width: 38px;
-            min-height: 38px;
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
+            min-height: 34px;
           }
 
           .whatsapp-btn svg {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
           }
 
           .discount-badge {
-            top: 10px;
-            right: 10px;
-            padding: 5px 10px;
-            font-size: clamp(10px, 2.5vw, 12px);
+            top: 8px;
+            right: 8px;
+            padding: 4px 8px;
+            font-size: 10px;
           }
         }
       `}</style>

@@ -84,11 +84,11 @@ const Collection = () => {
         </div>
       )}
 
-      <div className="products-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.5rem', marginTop: '2rem', justifyItems: 'center' }}>
+      <div className="products-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '2rem', marginTop: '2rem', justifyItems: 'center' }}>
         <style>{`
           @media (max-width: 768px) {
             .container {
-              padding: 1.5rem 15px;
+              padding: 1.5rem 12px !important;
               overflow-x: hidden;
               width: 100%;
               max-width: 100%;
@@ -96,85 +96,95 @@ const Collection = () => {
 
             .products-grid {
               grid-template-columns: repeat(2, 1fr) !important;
-              gap: 1rem !important;
-              margin-top: 1.5rem !important;
-              padding: 0 15px !important;
+              gap: 10px !important;
+              margin-top: 1.25rem !important;
+              padding: 0 !important; /* Remove duplicate padding */
+              width: 100% !important;
             }
 
             .product-card {
               width: 100% !important;
               max-width: 100% !important;
-              border-radius: 10px;
+              border-radius: 12px;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
             }
 
             .product-card img {
               width: 100% !important;
               max-width: 100% !important;
-              aspect-ratio: 3/4 !important;
+              aspect-ratio: 4/5 !important;
               object-fit: cover !important;
               display: block;
             }
 
             .product-card > div {
-              padding: 1rem !important;
+              padding: 0.75rem !important; /* Slightly more compact padding */
             }
 
             .product-card h3 {
-              font-size: clamp(0.9rem, 3.5vw, 1rem);
-              line-height: 1.4;
-              margin-bottom: 0.75rem;
+              font-size: 0.9rem !important;
+              line-height: 1.3;
+              margin-bottom: 0.5rem !important;
+              min-height: 2.6em !important;
             }
 
             .product-card h3 a {
-              font-size: clamp(0.9rem, 3.5vw, 1rem);
+              font-size: 0.9rem !important;
             }
 
             .product-card > div > div:first-of-type {
-              margin-bottom: 1rem;
+              margin-bottom: 0.75rem !important;
+              gap: 0.4rem !important;
             }
 
             .product-card > div > div:first-of-type span:first-child {
-              font-size: clamp(0.85rem, 3vw, 0.95rem);
+              font-size: 0.8rem !important;
             }
 
             .product-card > div > div:first-of-type span:last-child {
-              font-size: clamp(1.1rem, 4vw, 1.3rem);
+              font-size: 1rem !important;
             }
 
             .product-card > div > div:last-of-type {
-              gap: 0.5rem;
+              gap: 0.4rem !important;
             }
 
             .product-card button,
             .product-card a {
-              width: 38px !important;
-              height: 38px !important;
-              min-width: 38px !important;
-              min-height: 38px !important;
+              width: 34px !important;
+              height: 34px !important;
+              min-width: 34px !important;
+              min-height: 34px !important;
+              font-size: 16px !important;
             }
 
             .product-card button svg,
             .product-card a svg {
-              width: 18px !important;
-              height: 18px !important;
+              width: 16px !important;
+              height: 16px !important;
             }
 
             h1 {
-              font-size: clamp(1.5rem, 5vw, 1.75rem);
-              padding: 0 15px;
+              font-size: 1.6rem !important;
+              padding: 0 12px !important;
+              text-align: center;
+              margin-bottom: 1rem;
             }
 
             .price-filters {
-              flex-direction: column;
-              gap: 0.75rem;
-              margin: 1.5rem 0;
-              padding: 0 15px;
+              flex-direction: row !important;
+              flex-wrap: wrap;
+              gap: 0.5rem !important;
+              margin: 1.25rem 0 !important;
+              padding: 0 12px !important;
+              justify-content: center;
             }
 
             .price-filters .btn {
-              width: 100%;
-              min-height: 44px;
-              font-size: clamp(14px, 3.5vw, 16px);
+              width: calc(50% - 0.25rem) !important;
+              min-height: 40px !important;
+              padding: 8px 12px !important;
+              font-size: 13px !important;
             }
           }
         `}</style>
