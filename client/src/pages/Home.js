@@ -335,12 +335,14 @@ const Home = () => {
       {/* Newsletter */}
       <section className="newsletter-section section">
         <div className="container">
-          <h2>Subscribe to Our Newsletter</h2>
-          <p>Get updates on new collections and exclusive offers</p>
-          <form className="newsletter-form">
-            <input type="email" placeholder="Enter your email" />
-            <button type="submit" className="btn btn-primary">Subscribe</button>
-          </form>
+          <h2>Have Questions?</h2>
+          <p>Contact us for personalized inquiries and exclusive collection updates</p>
+          <div className="newsletter-contact">
+            <a href="mailto:Swathyreddy169@icloud.com" className="btn btn-primary" style={{ padding: '15px 40px', fontSize: '1.1rem' }}>
+              Email Us Directly
+            </a>
+            <p style={{ marginTop: '1rem', opacity: 0.8 }}>Swathyreddy169@icloud.com</p>
+          </div>
         </div>
       </section>
 
