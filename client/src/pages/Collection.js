@@ -84,11 +84,11 @@ const Collection = () => {
         </div>
       )}
 
-      <div className="products-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '1.5rem', marginTop: '2rem', justifyItems: 'center' }}>
+      <div className="products-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '2rem', marginTop: '2rem', justifyItems: 'center' }}>
         <style>{`
           @media (max-width: 768px) {
             .container {
-              padding: 1.5rem 15px;
+              padding: 1rem 12px;
               overflow-x: hidden;
               width: 100%;
               max-width: 100%;
@@ -96,85 +96,118 @@ const Collection = () => {
 
             .products-grid {
               grid-template-columns: repeat(2, 1fr) !important;
-              gap: 1rem !important;
-              margin-top: 1.5rem !important;
-              padding: 0 15px !important;
+              gap: 12px !important;
+              margin-top: 1rem !important;
+              padding: 0 !important;
+              width: 100% !important;
             }
 
             .product-card {
               width: 100% !important;
               max-width: 100% !important;
-              border-radius: 10px;
+              border-radius: 12px !important;
+              box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+            }
+
+            .product-card > a {
+              display: block !important;
+              width: 100% !important;
+              max-height: 200px;
+              overflow: hidden;
             }
 
             .product-card img {
               width: 100% !important;
               max-width: 100% !important;
-              aspect-ratio: 3/4 !important;
+              aspect-ratio: 4/5 !important;
               object-fit: cover !important;
-              display: block;
+              display: block !important;
+              transition: transform 0.5s ease;
             }
 
             .product-card > div {
-              padding: 1rem !important;
+              padding: 0.75rem !important;
+              display: flex;
+              flex-direction: column;
+              gap: 0.25rem;
             }
 
             .product-card h3 {
-              font-size: clamp(0.9rem, 3.5vw, 1rem);
-              line-height: 1.4;
-              margin-bottom: 0.75rem;
+              font-size: 0.85rem !important;
+              font-weight: 500 !important;
+              line-height: 1.3 !important;
+              margin-bottom: 0.4rem !important;
+              min-height: 2.6em !important;
+              color: #333 !important;
             }
 
             .product-card h3 a {
-              font-size: clamp(0.9rem, 3.5vw, 1rem);
+              font-size: 0.85rem !important;
+              color: #333 !important;
             }
 
             .product-card > div > div:first-of-type {
-              margin-bottom: 1rem;
+              margin-bottom: 0.6rem !important;
+              display: flex;
+              align-items: center;
+              gap: 0.4rem !important;
             }
 
             .product-card > div > div:first-of-type span:first-child {
-              font-size: clamp(0.85rem, 3vw, 0.95rem);
+              font-size: 0.75rem !important;
+              opacity: 0.6;
             }
 
             .product-card > div > div:first-of-type span:last-child {
-              font-size: clamp(1.1rem, 4vw, 1.3rem);
+              font-size: 1rem !important;
+              font-weight: 700 !important;
+              color: var(--primary-color) !important;
             }
 
             .product-card > div > div:last-of-type {
-              gap: 0.5rem;
+              gap: 0.4rem !important;
+              margin-top: 0.25rem;
             }
 
             .product-card button,
-            .product-card a {
-              width: 38px !important;
-              height: 38px !important;
-              min-width: 38px !important;
-              min-height: 38px !important;
+            .product-card a:not(.category-card) {
+              width: 32px !important;
+              height: 32px !important;
+              min-width: 32px !important;
+              min-height: 32px !important;
+              font-size: 14px !important;
+              border-width: 1px !important;
             }
 
             .product-card button svg,
             .product-card a svg {
-              width: 18px !important;
-              height: 18px !important;
+              width: 14px !important;
+              height: 14px !important;
             }
 
             h1 {
-              font-size: clamp(1.5rem, 5vw, 1.75rem);
-              padding: 0 15px;
+              font-size: 1.5rem !important;
+              padding: 0 12px !important;
+              text-align: center !important;
+              margin-bottom: 0.5rem !important;
+              font-family: 'Playfair Display', serif !important;
             }
 
             .price-filters {
-              flex-direction: column;
-              gap: 0.75rem;
-              margin: 1.5rem 0;
-              padding: 0 15px;
+              flex-direction: row !important;
+              flex-wrap: wrap;
+              gap: 0.4rem !important;
+              margin: 1rem 0 !important;
+              padding: 0 12px !important;
+              justify-content: center;
             }
 
             .price-filters .btn {
-              width: 100%;
-              min-height: 44px;
-              font-size: clamp(14px, 3.5vw, 16px);
+              width: calc(50% - 0.2rem) !important;
+              min-height: 38px !important;
+              padding: 6px 10px !important;
+              font-size: 12px !important;
+              border-radius: 6px !important;
             }
           }
         `}</style>
