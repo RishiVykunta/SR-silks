@@ -7,7 +7,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const { login, adminLogin, googleLogin } = useAuth();
+  const { login, adminLogin } = useAuth();
   const navigate = useNavigate();
 
 
