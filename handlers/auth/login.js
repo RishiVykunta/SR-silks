@@ -43,19 +43,7 @@ module.exports = async (req, res) => {
 
     const user = result.rows[0];
 
-    // Check if user is verified
-    if (!user.is_verified) {
-      return {
-        statusCode: 403,
-        headers: corsHeaders(),
-        body: JSON.stringify({ 
-          error: 'Verification required', 
-          message: 'Please verify your email before logging in.',
-          requiresVerification: true,
-          email: user.email
-        })
-      };
-    }
+
 
     // Verify password
     const isValidPassword = await bcrypt.compare(password, user.password);
