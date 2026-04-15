@@ -52,7 +52,9 @@ const Register = () => {
         if (result.requiresVerification) {
           navigate('/verify-otp', { state: { email: formData.email } });
         } else {
-          navigate('/');
+          // Success! User is verified by default now.
+          alert('Registration successful! You can now login.');
+          navigate('/login');
         }
       } else {
         setError(result.error || 'Registration failed');
