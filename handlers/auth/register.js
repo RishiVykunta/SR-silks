@@ -110,8 +110,7 @@ module.exports = async (req, res) => {
       headers: corsHeaders(),
       body: JSON.stringify({ 
         error: 'Registration failed',
-        message: error.message,
-        stack: error.stack
+        message: process.env.NODE_ENV === 'development' ? error.message : 'An error occurred during registration'
       })
     };
   }
