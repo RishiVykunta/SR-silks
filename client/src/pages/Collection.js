@@ -112,19 +112,21 @@ const Collection = () => {
             .product-card > a {
               display: block !important;
               width: 100% !important;
-              overflow: hidden;
+              aspect-ratio: 3/4 !important;
+              overflow: hidden !important;
+              border-radius: 12px 12px 0 0 !important; /* Round only top corners */
             }
 
             .product-card img {
               width: 100% !important;
-              max-width: 100% !important;
-              aspect-ratio: 3/4 !important; /* Match desired tall aspect ratio */
+              height: 100% !important;
               object-fit: cover !important;
               display: block !important;
+              border-radius: 0 !important; /* Reset any inherited radius */
             }
 
             .product-card > div {
-              padding: 1rem !important; /* More breathing room */
+              padding: 1rem !important;
               display: flex;
               flex-direction: column;
               gap: 0.5rem;
@@ -160,31 +162,37 @@ const Collection = () => {
             .product-card > div > div:first-of-type span:last-child {
               font-size: 1.25rem !important;
               font-weight: 700 !important;
-              color: #B8860B !important; /* Match gold/yellow price */
+              color: #B8860B !important; 
             }
 
             .product-card > div > div:last-of-type {
-              gap: 0.4rem !important;
-              margin-top: 0.25rem;
+              gap: 0.8rem !important;
+              margin-top: 0.5rem;
+              display: flex !important;
+              flex-direction: row !important;
+              align-items: center !important;
             }
 
+            /* Specific button selectors to avoid affecting the product link */
             .product-card button,
-            .product-card a:not(.category-card) {
-              width: 40px !important;
-              height: 40px !important;
-              min-width: 40px !important;
-              min-height: 40px !important;
-              font-size: 18px !important;
+            .product-card div > a {
+              width: 44px !important;
+              height: 44px !important;
+              min-width: 44px !important;
+              min-height: 44px !important;
+              font-size: 20px !important;
               border-radius: 50% !important;
               display: flex !important;
               align-items: center !important;
               justify-content: center !important;
+              margin: 0 !important;
+              padding: 0 !important;
             }
 
             .product-card button svg,
-            .product-card a svg {
-              width: 18px !important;
-              height: 18px !important;
+            .product-card div > a svg {
+              width: 20px !important;
+              height: 20px !important;
             }
 
             h1 {
