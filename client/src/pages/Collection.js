@@ -112,56 +112,55 @@ const Collection = () => {
             .product-card > a {
               display: block !important;
               width: 100% !important;
-              max-height: 200px;
               overflow: hidden;
             }
 
             .product-card img {
               width: 100% !important;
               max-width: 100% !important;
-              aspect-ratio: 4/5 !important;
+              aspect-ratio: 3/4 !important; /* Match desired tall aspect ratio */
               object-fit: cover !important;
               display: block !important;
-              transition: transform 0.5s ease;
             }
 
             .product-card > div {
-              padding: 0.75rem !important;
+              padding: 1rem !important; /* More breathing room */
               display: flex;
               flex-direction: column;
-              gap: 0.25rem;
+              gap: 0.5rem;
             }
 
             .product-card h3 {
-              font-size: 0.85rem !important;
-              font-weight: 500 !important;
-              line-height: 1.3 !important;
-              margin-bottom: 0.4rem !important;
-              min-height: 2.6em !important;
-              color: #333 !important;
+              font-family: 'Playfair Display', serif !important;
+              font-size: 1.1rem !important;
+              font-weight: 600 !important;
+              line-height: 1.4 !important;
+              margin-bottom: 0.5rem !important;
+              min-height: auto !important;
+              color: var(--dark-color) !important;
             }
 
             .product-card h3 a {
-              font-size: 0.85rem !important;
-              color: #333 !important;
+              font-family: 'Playfair Display', serif !important;
+              font-size: 1.1rem !important;
+              color: var(--dark-color) !important;
             }
 
             .product-card > div > div:first-of-type {
-              margin-bottom: 0.6rem !important;
+              margin: 0.5rem 0 !important;
               display: flex;
               align-items: center;
-              gap: 0.4rem !important;
+              gap: 0.5rem !important;
             }
 
             .product-card > div > div:first-of-type span:first-child {
-              font-size: 0.75rem !important;
-              opacity: 0.6;
+              font-size: 0.85rem !important;
             }
 
             .product-card > div > div:first-of-type span:last-child {
-              font-size: 1rem !important;
+              font-size: 1.25rem !important;
               font-weight: 700 !important;
-              color: var(--primary-color) !important;
+              color: #B8860B !important; /* Match gold/yellow price */
             }
 
             .product-card > div > div:last-of-type {
@@ -171,43 +170,48 @@ const Collection = () => {
 
             .product-card button,
             .product-card a:not(.category-card) {
-              width: 32px !important;
-              height: 32px !important;
-              min-width: 32px !important;
-              min-height: 32px !important;
-              font-size: 14px !important;
-              border-width: 1px !important;
+              width: 40px !important;
+              height: 40px !important;
+              min-width: 40px !important;
+              min-height: 40px !important;
+              font-size: 18px !important;
+              border-radius: 50% !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
             }
 
             .product-card button svg,
             .product-card a svg {
-              width: 14px !important;
-              height: 14px !important;
+              width: 18px !important;
+              height: 18px !important;
             }
 
             h1 {
-              font-size: 1.5rem !important;
+              font-size: 1.8rem !important;
               padding: 0 12px !important;
-              text-align: center !important;
-              margin-bottom: 0.5rem !important;
+              text-align: left !important;
+              margin-bottom: 1.5rem !important;
               font-family: 'Playfair Display', serif !important;
+              font-weight: 700 !important;
             }
 
             .price-filters {
               flex-direction: row !important;
               flex-wrap: wrap;
-              gap: 0.4rem !important;
-              margin: 1rem 0 !important;
+              gap: 0.6rem !important;
+              margin: 1.5rem 0 !important;
               padding: 0 12px !important;
-              justify-content: center;
+              justify-content: flex-start !important;
             }
 
             .price-filters .btn {
-              width: calc(50% - 0.2rem) !important;
-              min-height: 38px !important;
-              padding: 6px 10px !important;
-              font-size: 12px !important;
-              border-radius: 6px !important;
+              width: auto !important;
+              min-width: calc(50% - 0.3rem) !important;
+              min-height: 42px !important;
+              padding: 8px 15px !important;
+              font-size: 14px !important;
+              border-radius: 8px !important;
             }
           }
         `}</style>
